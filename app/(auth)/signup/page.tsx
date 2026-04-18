@@ -1,11 +1,19 @@
 'use client'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Eye, EyeOff, Loader2, CheckCircle } from 'lucide-react'
 
 export default function SignupPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-warm-white" />}>
+      <SignupForm />
+    </Suspense>
+  )
+}
+
+function SignupForm() {
   const router = useRouter()
   const params = useSearchParams()
   const refCode = params.get('ref') ?? ''
