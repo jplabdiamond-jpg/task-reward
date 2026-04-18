@@ -8,7 +8,7 @@ export type CampaignCategory = 'finance' | 'insurance' | 'credit_card' | 'app' |
 export interface Database {
   public: {
     Tables: {
-      users: {
+      tr_users: {
         Row: {
           id: string
           email: string
@@ -31,10 +31,10 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['users']['Row'], 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['users']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_users']['Row'], 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['tr_users']['Insert']>
       }
-      campaigns: {
+      tr_campaigns: {
         Row: {
           id: string
           title: string
@@ -59,10 +59,10 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['campaigns']['Row'], 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['campaigns']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_campaigns']['Row'], 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['tr_campaigns']['Insert']>
       }
-      user_missions: {
+      tr_user_missions: {
         Row: {
           id: string
           user_id: string
@@ -81,10 +81,10 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['user_missions']['Row'], 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['user_missions']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_user_missions']['Row'], 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['tr_user_missions']['Insert']>
       }
-      quiz_questions: {
+      tr_quiz_questions: {
         Row: {
           id: string
           campaign_id: string
@@ -95,10 +95,10 @@ export interface Database {
           order_num: number
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['quiz_questions']['Row'], 'created_at'>
-        Update: Partial<Database['public']['Tables']['quiz_questions']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_quiz_questions']['Row'], 'created_at'>
+        Update: Partial<Database['public']['Tables']['tr_quiz_questions']['Insert']>
       }
-      rewards: {
+      tr_rewards: {
         Row: {
           id: string
           user_id: string
@@ -108,10 +108,10 @@ export interface Database {
           description: string
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['rewards']['Row'], 'created_at'>
-        Update: Partial<Database['public']['Tables']['rewards']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_rewards']['Row'], 'created_at'>
+        Update: Partial<Database['public']['Tables']['tr_rewards']['Insert']>
       }
-      withdrawals: {
+      tr_withdrawals: {
         Row: {
           id: string
           user_id: string
@@ -123,10 +123,10 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['withdrawals']['Row'], 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['withdrawals']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_withdrawals']['Row'], 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['tr_withdrawals']['Insert']>
       }
-      referrals: {
+      tr_referrals: {
         Row: {
           id: string
           referrer_id: string
@@ -136,10 +136,10 @@ export interface Database {
           paid_at: string | null
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['referrals']['Row'], 'created_at'>
-        Update: Partial<Database['public']['Tables']['referrals']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_referrals']['Row'], 'created_at'>
+        Update: Partial<Database['public']['Tables']['tr_referrals']['Insert']>
       }
-      device_logs: {
+      tr_device_logs: {
         Row: {
           id: string
           user_id: string
@@ -150,10 +150,10 @@ export interface Database {
           is_suspicious: boolean
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['device_logs']['Row'], 'created_at'>
-        Update: Partial<Database['public']['Tables']['device_logs']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_device_logs']['Row'], 'created_at'>
+        Update: Partial<Database['public']['Tables']['tr_device_logs']['Insert']>
       }
-      daily_missions: {
+      tr_daily_missions: {
         Row: {
           id: string
           user_id: string
@@ -163,10 +163,10 @@ export interface Database {
           streak_bonus: number
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['daily_missions']['Row'], 'created_at'>
-        Update: Partial<Database['public']['Tables']['daily_missions']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_daily_missions']['Row'], 'created_at'>
+        Update: Partial<Database['public']['Tables']['tr_daily_missions']['Insert']>
       }
-      notifications: {
+      tr_notifications: {
         Row: {
           id: string
           user_id: string
@@ -177,10 +177,10 @@ export interface Database {
           link: string | null
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['notifications']['Row'], 'created_at'>
-        Update: Partial<Database['public']['Tables']['notifications']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_notifications']['Row'], 'created_at'>
+        Update: Partial<Database['public']['Tables']['tr_notifications']['Insert']>
       }
-      campaign_reviews: {
+      tr_campaign_reviews: {
         Row: {
           id: string
           user_id: string
@@ -191,8 +191,8 @@ export interface Database {
           comment: string | null
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['campaign_reviews']['Row'], 'created_at'>
-        Update: Partial<Database['public']['Tables']['campaign_reviews']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tr_campaign_reviews']['Row'], 'created_at'>
+        Update: Partial<Database['public']['Tables']['tr_campaign_reviews']['Insert']>
       }
     }
   }
