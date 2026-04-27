@@ -58,15 +58,15 @@ export default async function EarningsPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { icon: '💰', label: '累計報酬', value: formatCurrency(profile?.total_earned ?? 0), color: 'text-notion-blue' },
+          { icon: '💰', label: '累計報酬', value: formatCurrency(profile?.total_earned ?? 0), color: 'text-green-400' },
           { icon: '📅', label: '今月の報酬', value: formatCurrency(thisMonthEarned), color: 'text-green-600' },
-          { icon: '⚡', label: '時給換算', value: formatCurrency(hourlyRate) + '/h', color: 'text-teal' },
-          { icon: '✅', label: '完了案件数', value: `${missions?.length ?? 0}件`, color: 'text-warm-gray-500' },
+          { icon: '⚡', label: '時給換算', value: formatCurrency(hourlyRate) + '/h', color: 'text-cyan-400' },
+          { icon: '✅', label: '完了案件数', value: `${missions?.length ?? 0}件`, color: 'text-[#b8bcc8]' },
         ].map(s => (
           <div key={s.label} className="card p-4">
             <div className="text-xl mb-1">{s.icon}</div>
             <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>
-            <div className="text-xs text-warm-gray-500 mt-0.5">{s.label}</div>
+            <div className="text-xs text-[#b8bcc8] mt-0.5">{s.label}</div>
           </div>
         ))}
       </div>
@@ -74,21 +74,21 @@ export default async function EarningsPage() {
       {/* Daily Bar Chart */}
       <div className="card p-5">
         <div className="flex items-center gap-2 mb-4">
-          <Calendar size={16} className="text-notion-blue" />
+          <Calendar size={16} className="text-green-400" />
           <h2 className="font-bold">日別収益（直近14日）</h2>
         </div>
         {dailyData.length === 0 ? (
-          <p className="text-sm text-warm-gray-300 text-center py-8">まだ収益データがありません</p>
+          <p className="text-sm text-[#6b7280] text-center py-8">まだ収益データがありません</p>
         ) : (
           <div className="flex items-end gap-1.5 h-32">
             {dailyData.map(([date, amount]) => (
               <div key={date} className="flex-1 flex flex-col items-center gap-1 min-w-0">
                 <div
-                  className="w-full bg-notion-blue rounded-t-sm transition-all hover:bg-notion-blue-active"
+                  className="w-full bg-green-500 rounded-t-sm transition-all hover:bg-green-500-active"
                   style={{ height: `${Math.max((amount / maxDaily) * 100, 4)}%` }}
                   title={`${date}: ${formatCurrency(amount)}`}
                 />
-                <span className="text-[9px] text-warm-gray-300 truncate w-full text-center">
+                <span className="text-[9px] text-[#6b7280] truncate w-full text-center">
                   {date.slice(5)}
                 </span>
               </div>
@@ -100,20 +100,20 @@ export default async function EarningsPage() {
       {/* Monthly Trend */}
       <div className="card p-5">
         <div className="flex items-center gap-2 mb-4">
-          <TrendingUp size={16} className="text-notion-blue" />
+          <TrendingUp size={16} className="text-green-400" />
           <h2 className="font-bold">月別収益</h2>
         </div>
         {monthData.length === 0 ? (
-          <p className="text-sm text-warm-gray-300 text-center py-6">データなし</p>
+          <p className="text-sm text-[#6b7280] text-center py-6">データなし</p>
         ) : (
           <div className="space-y-2">
             {monthData.reverse().map(([month, amount]) => {
               const maxMonth = Math.max(...monthData.map(([, v]) => v), 1)
               return (
                 <div key={month} className="flex items-center gap-3">
-                  <span className="text-xs text-warm-gray-500 w-16 flex-shrink-0">{month}</span>
-                  <div className="flex-1 bg-warm-white rounded-full h-2 overflow-hidden">
-                    <div className="bg-notion-blue h-2 rounded-full transition-all"
+                  <span className="text-xs text-[#b8bcc8] w-16 flex-shrink-0">{month}</span>
+                  <div className="flex-1 bg-[#0e1014] rounded-full h-2 overflow-hidden">
+                    <div className="bg-green-500 h-2 rounded-full transition-all"
                       style={{ width: `${(amount / maxMonth) * 100}%` }} />
                   </div>
                   <span className="text-sm font-bold w-20 text-right">{formatCurrency(amount)}</span>
@@ -128,7 +128,7 @@ export default async function EarningsPage() {
       {topCampaigns.length > 0 && (
         <div className="card p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Award size={16} className="text-notion-blue" />
+            <Award size={16} className="text-green-400" />
             <h2 className="font-bold">案件別収益ランキング</h2>
           </div>
           <div className="space-y-2">
@@ -151,14 +151,14 @@ export default async function EarningsPage() {
           <h2 className="font-bold">収益履歴</h2>
         </div>
         {(rewards ?? []).length === 0 ? (
-          <p className="text-sm text-warm-gray-300 text-center py-8">まだ収益がありません</p>
+          <p className="text-sm text-[#6b7280] text-center py-8">まだ収益がありません</p>
         ) : (
           <div className="divide-y divide-[rgba(0,0,0,0.06)]">
             {(rewards ?? []).map(r => (
               <div key={r.id} className="flex items-center justify-between px-4 py-3">
                 <div>
                   <div className="text-sm font-medium">{r.description}</div>
-                  <div className="text-xs text-warm-gray-300">
+                  <div className="text-xs text-[#6b7280]">
                     {new Date(r.created_at).toLocaleDateString('ja-JP', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>

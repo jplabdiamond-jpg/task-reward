@@ -40,7 +40,7 @@ export default function ReferralPage() {
   return (
     <div className="space-y-6 pb-20 md:pb-0">
       <div className="flex items-center gap-2">
-        <Users size={20} className="text-notion-blue" />
+        <Users size={20} className="text-green-400" />
         <h1 className="text-2xl font-bold tracking-tight">紹介プログラム</h1>
       </div>
 
@@ -52,11 +52,11 @@ export default function ReferralPage() {
             { level: '1段階目', desc: '紹介した友人が初案件を完了', bonus: '友人の報酬の10%', icon: '👤' },
             { level: '2段階目', desc: '友人が紹介した人が初案件を完了', bonus: '孫紹介の報酬の5%', icon: '👥' },
           ].map(r => (
-            <div key={r.level} className="flex items-start gap-3 p-3 bg-warm-white rounded-xl">
+            <div key={r.level} className="flex items-start gap-3 p-3 bg-[#0e1014] rounded-xl">
               <span className="text-2xl">{r.icon}</span>
               <div className="flex-1">
                 <div className="font-semibold text-sm">{r.level}</div>
-                <div className="text-xs text-warm-gray-500">{r.desc}</div>
+                <div className="text-xs text-[#b8bcc8]">{r.desc}</div>
               </div>
               <div className="badge text-[10px]">{r.bonus}</div>
             </div>
@@ -72,8 +72,8 @@ export default function ReferralPage() {
           { label: '確定待ち', value: formatCurrency(pendingBonus) },
         ].map(s => (
           <div key={s.label} className="card p-3 text-center">
-            <div className="text-lg font-bold text-notion-blue">{s.value}</div>
-            <div className="text-xs text-warm-gray-500 mt-0.5">{s.label}</div>
+            <div className="text-lg font-bold text-green-400">{s.value}</div>
+            <div className="text-xs text-[#b8bcc8] mt-0.5">{s.label}</div>
           </div>
         ))}
       </div>
@@ -82,7 +82,7 @@ export default function ReferralPage() {
       <div className="card p-5 space-y-3">
         <h2 className="font-bold">あなたの招待リンク</h2>
         <div className="flex items-center gap-2">
-          <div className="flex-1 bg-warm-white rounded-lg px-3 py-2.5 text-sm font-mono truncate text-warm-gray-500">
+          <div className="flex-1 bg-[#0e1014] rounded-lg px-3 py-2.5 text-sm font-mono truncate text-[#b8bcc8]">
             {referralUrl || '読み込み中...'}
           </div>
           <button onClick={copyLink} className="btn-primary flex items-center gap-1.5 px-4 py-2.5 flex-shrink-0">
@@ -105,8 +105,8 @@ export default function ReferralPage() {
         </div>
 
         {profile && (
-          <div className="text-center text-xs text-warm-gray-300">
-            招待コード: <span className="font-mono font-bold text-warm-gray-500">{profile.referral_code}</span>
+          <div className="text-center text-xs text-[#6b7280]">
+            招待コード: <span className="font-mono font-bold text-[#b8bcc8]">{profile.referral_code}</span>
           </div>
         )}
       </div>
@@ -114,11 +114,11 @@ export default function ReferralPage() {
       {/* Referral History */}
       <div className="card">
         <div className="p-4 border-b border-[rgba(0,0,0,0.06)] flex items-center gap-2">
-          <Gift size={14} className="text-notion-blue" />
+          <Gift size={14} className="text-green-400" />
           <h2 className="font-bold text-sm">紹介履歴</h2>
         </div>
         {referrals.length === 0 ? (
-          <div className="py-10 text-center text-warm-gray-300">
+          <div className="py-10 text-center text-[#6b7280]">
             <Users size={32} className="mx-auto mb-2 opacity-30" />
             <p className="text-sm">まだ紹介実績がありません</p>
             <p className="text-xs mt-1">友達を招待して報酬を稼ごう！</p>
@@ -129,12 +129,12 @@ export default function ReferralPage() {
               <div key={r.id ?? r.created_at} className="flex items-center justify-between px-4 py-3">
                 <div>
                   <div className="text-sm font-medium">紹介ユーザー</div>
-                  <div className="text-xs text-warm-gray-300">
+                  <div className="text-xs text-[#6b7280]">
                     {new Date(r.created_at).toLocaleDateString('ja-JP')} ·{' '}
                     {r.paid_at ? <span className="text-green-600">支払済</span> : <span className="text-orange-500">確定待ち</span>}
                   </div>
                 </div>
-                <div className={`text-sm font-bold ${r.paid_at ? 'text-green-600' : 'text-warm-gray-300'}`}>
+                <div className={`text-sm font-bold ${r.paid_at ? 'text-green-600' : 'text-[#6b7280]'}`}>
                   {r.bonus_amount > 0 ? `+${formatCurrency(r.bonus_amount)}` : '集計中'}
                 </div>
               </div>

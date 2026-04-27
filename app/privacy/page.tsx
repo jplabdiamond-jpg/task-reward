@@ -3,14 +3,14 @@ import { ArrowLeft } from 'lucide-react'
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="min-h-screen bg-[#0e1014]">
       <div className="max-w-3xl mx-auto px-4 py-12">
-        <Link href="/" className="flex items-center gap-1.5 text-warm-gray-500 hover:text-notion-blue text-sm mb-8 transition-colors">
+        <Link href="/" className="flex items-center gap-1.5 text-[#b8bcc8] hover:text-green-400 text-sm mb-8 transition-colors">
           <ArrowLeft size={14} />トップへ戻る
         </Link>
         <div className="card p-8">
           <h1 className="text-2xl font-bold mb-2">プライバシーポリシー</h1>
-          <p className="text-warm-gray-300 text-xs mb-6">最終更新日: 2025年1月1日</p>
+          <p className="text-[#6b7280] text-xs mb-6">最終更新日: 2025年1月1日</p>
 
           {[
             {
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
           ].map(s => (
             <div key={s.title} className="mb-6">
               <h2 className="text-lg font-bold mb-2">{s.title}</h2>
-              <p className="text-sm text-warm-gray-500 leading-relaxed">{s.body}</p>
+              <p className="text-sm text-[#b8bcc8] leading-relaxed">{s.body}</p>
             </div>
           ))}
         </div>

@@ -1,67 +1,61 @@
 'use client'
-import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
-import { LayoutDashboard, Target, TrendingUp, Trophy, Wallet, LogOut } from 'lucide-react'
-import { cn, formatCurrency } from '@/lib/utils'
 
-const NAV = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'ホーム' },
-  { href: '/campaigns', icon: Target, label: '案件' },
-  { href: '/earnings', icon: TrendingUp, label: '収益' },
-  { href: '/ranking', icon: Trophy, label: 'ランキング' },
-  { href: '/withdraw', icon: Wallet, label: '出金' },
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { LayoutDashboard, Gamepad2, ClipboardList, Video, Gift } from 'lucide-react'
+
+type Profile = {
+  nickname: string | null
+  balance: number | null
+  confirmed_balance?: number | null
+} | null
+
+const TABS = [
+  { href: '/dashboard', label: 'Home', icon: LayoutDashboard },
+  { href: '/earn', label: 'Earn', icon: Gamepad2 },
+  { href: '/surveys', label: 'Surveys', icon: ClipboardList },
+  { href: '/tasks', label: 'Tasks', icon: Video },
+  { href: '/rewards', label: 'Rewards', icon: Gift },
 ]
 
-interface MobileNavProps {
-  profile: { nickname: string; balance: number } | null
-}
-
-export default function MobileNav({ profile }: MobileNavProps) {
-  const path = usePathname()
-  const router = useRouter()
-
-  const handleLogout = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    router.push('/')
-    router.refresh()
-  }
+export default function MobileNav({ profile }: { profile: Profile }) {
+  const pathname = usePathname()
+  const balance = profile?.confirmed_balance ?? profile?.balance ?? 0
 
   return (
     <>
-      {/* Top header (mobile only) */}
-      <header className="md:hidden bg-white border-b border-[rgba(0,0,0,0.1)] px-4 h-12 flex items-center justify-between sticky top-0 z-40">
-        <Link href="/dashboard" className="flex items-center gap-1.5">
-          <div className="w-6 h-6 bg-notion-blue rounded-md flex items-center justify-center">
-            <span className="text-white text-xs font-bold">TR</span>
-          </div>
-          <span className="font-bold text-sm">TaskReward</span>
-        </Link>
-        {profile && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-notion-blue">{formatCurrency(profile.balance)}</span>
-            <button onClick={handleLogout} className="p-1.5 text-warm-gray-300 hover:text-red-500 transition-colors">
-              <LogOut size={16} />
-            </button>
-          </div>
-        )}
+      <header className="md:hidden sticky top-0 z-40 bg-[#0e1014]/95 backdrop-blur border-b border-[#2a2f3d]">
+        <div className="flex items-center justify-between px-4 h-14">
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center font-black text-black text-xs">
+              TR
+            </div>
+            <span className="font-black">TaskReward</span>
+          </Link>
+          <Link href="/rewards" className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-lg text-amber-400 font-bold text-sm">
+            🪙 {balance.toLocaleString()}
+          </Link>
+        </div>
       </header>
 
-      {/* Bottom nav (mobile only) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[rgba(0,0,0,0.1)] z-40 flex">
-        {NAV.map(({ href, icon: Icon, label }) => (
-          <Link key={href} href={href}
-            className={cn(
-              'flex-1 flex flex-col items-center justify-center py-2 gap-0.5 text-[10px] font-medium transition-colors',
-              path === href || path.startsWith(href + '/')
-                ? 'text-notion-blue'
-                : 'text-warm-gray-300'
-            )}>
-            <Icon size={20} />
-            {label}
-          </Link>
-        ))}
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#171a21]/95 backdrop-blur border-t border-[#2a2f3d]" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        <div className="grid grid-cols-5">
+          {TABS.map(t => {
+            const active = pathname === t.href || pathname.startsWith(t.href + '/')
+            return (
+              <Link
+                key={t.href}
+                href={t.href}
+                className={`flex flex-col items-center justify-center py-2.5 gap-0.5 transition-colors ${
+                  active ? 'text-green-400' : 'text-[#6b7280]'
+                }`}
+              >
+                <t.icon size={20} />
+                <span className="text-[10px] font-semibold">{t.label}</span>
+              </Link>
+            )
+          })}
+        </div>
       </nav>
     </>
   )

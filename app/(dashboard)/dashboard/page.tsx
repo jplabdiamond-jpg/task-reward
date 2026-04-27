@@ -1,154 +1,166 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { TrendingUp, Zap, Target, Gift, ChevronRight, Star } from 'lucide-react'
-import { formatCurrency, getRankLabel, getRankColor, getScoreLabel, getDifficultyLabel } from '@/lib/utils'
+import { Coins, Gamepad2, ClipboardList, Video, Gift, TrendingUp, Trophy, Users } from 'lucide-react'
+
+export const dynamic = 'force-dynamic'
+
+const RANK_LABEL: Record<string, string> = {
+  beginner: 'Beginner', bronze: 'Bronze', silver: 'Silver',
+  gold: 'Gold', platinum: 'Platinum', diamond: 'Diamond',
+}
+const RANK_COLOR: Record<string, string> = {
+  beginner: 'text-gray-400', bronze: 'text-orange-400',
+  silver: 'text-slate-300', gold: 'text-yellow-400',
+  platinum: 'text-cyan-300', diamond: 'text-purple-300',
+}
 
 export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const [{ data: profile }, { data: campaigns }, { data: recentRewards }, { data: todayMission }] =
-    await Promise.all([
-      supabase.from('tr_users').select('*').eq('id', user!.id).single(),
-      supabase.from('tr_campaigns').select('*').eq('is_active', true).order('reward_amount', { ascending: false }).limit(5),
-      supabase.from('tr_rewards').select('*').eq('user_id', user!.id).order('created_at', { ascending: false }).limit(5),
-      supabase.from('tr_daily_missions').select('*').eq('user_id', user!.id).eq('date', new Date().toISOString().split('T')[0]).single(),
-    ])
+  const [{ data: profile }, { data: recentRewards }, { data: hotCampaigns }] = await Promise.all([
+    supabase.from('tr_users')
+      .select('nickname,rank,confirmed_balance,pending_balance,balance,total_earned,level,xp,streak_days')
+      .eq('id', user!.id).single(),
+    supabase.from('tr_rewards')
+      .select('id,amount,description,created_at,type')
+      .eq('user_id', user!.id)
+      .order('created_at', { ascending: false })
+      .limit(5),
+    supabase.from('tr_campaigns')
+      .select('id,title,reward_amount,category,thumbnail_url,estimated_time')
+      .eq('is_active', true)
+      .order('reward_amount', { ascending: false })
+      .limit(4),
+  ])
 
-  const topCampaigns = (campaigns ?? [])
-    .map(c => ({ ...c, score: getScoreLabel(c) }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 5)
+  const balance = profile?.confirmed_balance ?? profile?.balance ?? 0
+  const totalEarned = profile?.total_earned ?? 0
 
-  const missionsToday = todayMission?.missions_completed ?? 0
-  const dailyTarget = 3
+  const QUICK_ACTIONS = [
+    { href: '/earn', label: 'Offerwall', icon: Gamepad2, color: 'green', desc: '高単価案件' },
+    { href: '/surveys', label: 'Surveys', icon: ClipboardList, color: 'blue', desc: '安定報酬' },
+    { href: '/tasks', label: 'Tasks', icon: Video, color: 'purple', desc: '動画+CTA' },
+    { href: '/rewards', label: 'Rewards', icon: Gift, color: 'amber', desc: '即時交換' },
+  ]
 
   return (
-    <div className="space-y-6 pb-20 md:pb-0">
-      {/* Welcome */}
+    <div className="space-y-6">
+      {/* Greeting */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          おかえりなさい、{profile?.nickname ?? 'ユーザー'}さん 👋
+        <h1 className="text-2xl md:text-3xl font-black tracking-tight">
+          おかえり、<span className="text-green-400">{profile?.nickname ?? 'User'}</span> 👋
         </h1>
-        <p className="text-sm text-warm-gray-500 mt-1">
-          <span style={{ color: getRankColor(profile?.rank ?? 'beginner') }}>●</span>{' '}
-          {getRankLabel(profile?.rank ?? 'beginner')} ランク・Lv.{profile?.level ?? 1}
+        <p className="text-[#b8bcc8] text-sm md:text-base mt-1">
+          {profile?.streak_days ? `🔥 ${profile.streak_days}日連続ログイン中` : '今日も稼ごう'}
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {[
-          { label: '利用可能残高', value: formatCurrency(profile?.balance ?? 0), icon: '💰', color: 'text-notion-blue' },
-          { label: '累計報酬', value: formatCurrency(profile?.total_earned ?? 0), icon: '📈', color: 'text-green-600' },
-          { label: '連続ログイン', value: `${profile?.streak_days ?? 0}日`, icon: '🔥', color: 'text-orange-500' },
-          { label: '今日の達成', value: `${missionsToday}/${dailyTarget}`, icon: '✅', color: 'text-teal' },
-        ].map(s => (
-          <div key={s.label} className="card p-4">
-            <div className="text-xl mb-1">{s.icon}</div>
-            <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>
-            <div className="text-xs text-warm-gray-500 mt-0.5">{s.label}</div>
+      {/* Balance Hero */}
+      <div className="card p-6 md:p-8 bg-gradient-to-br from-green-500/10 via-amber-500/5 to-purple-500/10 border-green-500/20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <div className="text-xs text-[#b8bcc8] mb-1 uppercase tracking-wider">出金可能</div>
+            <div className="text-4xl md:text-5xl font-black text-amber-400 count-up">
+              🪙 {balance.toLocaleString()}
+            </div>
+            <Link href="/rewards" className="inline-block mt-3 btn-primary text-sm">
+              交換する →
+            </Link>
           </div>
+          <div className="md:border-l md:border-[#2a2f3d] md:pl-6">
+            <div className="text-xs text-[#b8bcc8] mb-1 uppercase tracking-wider">承認待ち</div>
+            <div className="text-2xl font-black text-[#6b7280]">
+              {(profile?.pending_balance ?? 0).toLocaleString()}
+            </div>
+            <div className="text-[10px] text-[#6b7280] mt-1">ASP承認後に確定</div>
+          </div>
+          <div className="md:border-l md:border-[#2a2f3d] md:pl-6">
+            <div className="text-xs text-[#b8bcc8] mb-1 uppercase tracking-wider">累計獲得</div>
+            <div className="text-2xl font-black text-green-400">{totalEarned.toLocaleString()}</div>
+            <div className={`text-xs font-bold mt-1 ${RANK_COLOR[profile?.rank ?? 'beginner']}`}>
+              {RANK_LABEL[profile?.rank ?? 'beginner']} · Lv {profile?.level ?? 1}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {QUICK_ACTIONS.map(a => (
+          <Link key={a.href} href={a.href} className="card card-hover p-5 text-center group">
+            <div className={`w-12 h-12 mx-auto mb-3 bg-${a.color}-500/10 rounded-xl flex items-center justify-center`}>
+              <a.icon className={`text-${a.color}-400`} size={22} />
+            </div>
+            <div className="font-bold mb-0.5">{a.label}</div>
+            <div className="text-xs text-[#6b7280]">{a.desc}</div>
+          </Link>
         ))}
       </div>
 
-      {/* Daily Mission Progress */}
-      <div className="card p-4">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Target size={16} className="text-notion-blue" />
-            <span className="font-semibold text-sm">デイリーミッション</span>
-          </div>
-          <span className="badge">{missionsToday}/{dailyTarget}完了</span>
-        </div>
-        <div className="bg-warm-white rounded-full h-2 overflow-hidden">
-          <div
-            className="bg-notion-blue h-2 rounded-full transition-all"
-            style={{ width: `${Math.min((missionsToday / dailyTarget) * 100, 100)}%` }}
-          />
-        </div>
-        <p className="text-xs text-warm-gray-500 mt-2">
-          {missionsToday >= dailyTarget
-            ? '🎉 本日のミッション達成！ボーナス報酬獲得'
-            : `あと${dailyTarget - missionsToday}件でボーナス報酬 +¥100`}
-        </p>
-      </div>
-
-      {/* AI推薦 TOP5 */}
+      {/* Hot offers */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Zap size={16} className="text-notion-blue" />
-            <h2 className="font-bold">今やるべき案件 TOP5</h2>
-          </div>
-          <Link href="/campaigns" className="text-xs text-notion-blue hover:underline flex items-center gap-0.5">
-            すべて見る <ChevronRight size={12} />
-          </Link>
+          <h2 className="text-lg font-bold flex items-center gap-2">
+            <TrendingUp size={18} className="text-green-400" /> 高単価案件
+          </h2>
+          <Link href="/earn" className="text-sm text-green-400 hover:text-green-300">すべて見る →</Link>
         </div>
-        <div className="space-y-2">
-          {topCampaigns.map((c, i) => (
-            <Link key={c.id} href={`/campaigns/${c.id}`}>
-              <div className="card p-4 flex items-center gap-3 hover:shadow-deep transition-shadow cursor-pointer">
-                <div className="w-8 h-8 bg-badge-blue-bg rounded-lg flex items-center justify-center text-notion-blue font-bold text-sm flex-shrink-0">
-                  {i + 1}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm truncate">{c.title}</div>
-                  <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                    <span className="text-xs text-warm-gray-500">{getDifficultyLabel(c.difficulty)}</span>
-                    <span className="text-xs text-warm-gray-300">•</span>
-                    <span className="text-xs text-warm-gray-500">CV率 {Math.round(c.cv_rate * 100)}%</span>
-                    <span className="text-xs text-warm-gray-300">•</span>
-                    <span className="text-xs text-warm-gray-500">約{c.estimated_time}分</span>
-                  </div>
-                </div>
-                <div className="text-right flex-shrink-0">
-                  <div className="font-bold text-notion-blue">{formatCurrency(c.reward_amount)}</div>
-                  <div className="text-[10px] text-warm-gray-300">スコア {c.score}</div>
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {(hotCampaigns ?? []).map((c: any) => (
+            <Link key={c.id} href={`/earn/${c.id}`} className="card card-hover p-4">
+              <div className="aspect-video bg-gradient-to-br from-[#252a38] to-[#1f2330] rounded-lg mb-3 flex items-center justify-center text-3xl">
+                🎯
+              </div>
+              <div className="text-xs text-[#6b7280] mb-1">{c.category}</div>
+              <div className="font-bold text-sm line-clamp-2 mb-2">{c.title}</div>
+              <div className="flex items-center justify-between">
+                <span className="text-amber-400 font-black inline-flex items-center gap-1">
+                  <Coins size={12} /> {c.reward_amount.toLocaleString()}
+                </span>
+                <span className="text-xs text-[#6b7280]">{c.estimated_time}分</span>
               </div>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Recent Rewards */}
-      {(recentRewards ?? []).length > 0 && (
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Gift size={16} className="text-notion-blue" />
-            <h2 className="font-bold">最近の報酬履歴</h2>
-          </div>
-          <div className="card divide-y divide-[rgba(0,0,0,0.06)]">
-            {recentRewards!.map(r => (
-              <div key={r.id} className="flex items-center justify-between px-4 py-3">
-                <div>
-                  <div className="text-sm font-medium">{r.description}</div>
-                  <div className="text-xs text-warm-gray-300">
-                    {new Date(r.created_at).toLocaleDateString('ja-JP')}
-                  </div>
+      {/* Recent rewards */}
+      <div>
+        <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+          <Trophy size={18} className="text-amber-400" /> 最近の報酬
+        </h2>
+        <div className="card divide-y divide-[#2a2f3d]">
+          {(recentRewards ?? []).length === 0 ? (
+            <div className="p-6 text-center text-sm text-[#6b7280]">まだ報酬がありません</div>
+          ) : (
+            (recentRewards ?? []).map((r: any) => (
+              <div key={r.id} className="p-4 flex items-center gap-3">
+                <div className="w-9 h-9 bg-green-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Coins className="text-green-400" size={16} />
                 </div>
-                <div className="font-bold text-green-600">+{formatCurrency(r.amount)}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-sm line-clamp-1">{r.description}</div>
+                  <div className="text-xs text-[#6b7280]">{new Date(r.created_at).toLocaleString('ja-JP')}</div>
+                </div>
+                <div className="text-amber-400 font-black">+{r.amount?.toLocaleString()}</div>
               </div>
-            ))}
-          </div>
+            ))
+          )}
         </div>
-      )}
+      </div>
 
-      {/* Withdraw CTA */}
-      {(profile?.balance ?? 0) >= 1000 && (
-        <div className="card p-4 bg-gradient-to-r from-blue-50 to-badge-blue-bg border-notion-blue/20">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="font-semibold text-sm">出金可能です！</div>
-              <div className="text-xs text-warm-gray-500 mt-0.5">残高 {formatCurrency(profile!.balance)} が出金可能</div>
-            </div>
-            <Link href="/withdraw" className="btn-primary text-sm px-4 py-2">
-              出金する
-            </Link>
-          </div>
+      {/* Referral CTA */}
+      <Link href="/referral" className="card card-hover p-5 flex items-center gap-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-500/20">
+        <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
+          <Users className="text-purple-400" size={22} />
         </div>
-      )}
+        <div className="flex-1">
+          <div className="font-bold">友達招待で永続報酬</div>
+          <div className="text-xs text-[#b8bcc8]">友達の獲得額の10%があなたに。紹介の紹介で5%</div>
+        </div>
+        <span className="text-purple-400">→</span>
+      </Link>
     </div>
   )
 }

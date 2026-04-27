@@ -172,7 +172,7 @@ export default function MissionFlow({ campaign, questions, existingMission, user
       <div className="card p-8 text-center">
         <CheckCircle size={48} className="mx-auto text-green-500 mb-3" />
         <h3 className="font-bold text-lg mb-1">この案件は完了済みです</h3>
-        <p className="text-sm text-warm-gray-500">報酬は既に付与されています</p>
+        <p className="text-sm text-[#b8bcc8]">報酬は既に付与されています</p>
       </div>
     )
   }
@@ -181,13 +181,13 @@ export default function MissionFlow({ campaign, questions, existingMission, user
     <div className="space-y-4">
       {/* Progress Bar */}
       <div className="card p-4">
-        <div className="flex items-center justify-between text-xs text-warm-gray-500 mb-2">
+        <div className="flex items-center justify-between text-xs text-[#b8bcc8] mb-2">
           {['動画視聴', 'クイズ', 'アクション', '完了'].map((s, i) => (
-            <span key={s} className={progress > i * 33 ? 'text-notion-blue font-semibold' : ''}>{s}</span>
+            <span key={s} className={progress > i * 33 ? 'text-green-400 font-semibold' : ''}>{s}</span>
           ))}
         </div>
-        <div className="bg-warm-white rounded-full h-2 overflow-hidden">
-          <div className="bg-notion-blue h-2 rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
+        <div className="bg-[#0e1014] rounded-full h-2 overflow-hidden">
+          <div className="bg-green-500 h-2 rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
         </div>
       </div>
 
@@ -195,7 +195,7 @@ export default function MissionFlow({ campaign, questions, existingMission, user
       {step === 'video' && (
         <div className="card p-5 space-y-4">
           <h2 className="font-bold text-lg flex items-center gap-2">
-            <span className="w-6 h-6 bg-notion-blue text-white rounded-full flex items-center justify-center text-xs">1</span>
+            <span className="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs">1</span>
             動画を視聴する
           </h2>
           <div className="relative bg-black rounded-xl overflow-hidden aspect-video">
@@ -219,17 +219,17 @@ export default function MissionFlow({ campaign, questions, existingMission, user
 
           {videoStarted && !videoCompleted && (
             <div>
-              <div className="flex justify-between text-xs text-warm-gray-500 mb-1">
+              <div className="flex justify-between text-xs text-[#b8bcc8] mb-1">
                 <span>視聴進捗</span>
                 <span>{Math.floor(watchDuration)}秒 / {Math.floor(requiredSeconds)}秒</span>
               </div>
-              <div className="bg-warm-white rounded-full h-2 overflow-hidden">
+              <div className="bg-[#0e1014] rounded-full h-2 overflow-hidden">
                 <div
                   className="bg-teal h-2 rounded-full transition-all"
                   style={{ width: `${Math.min((watchDuration / requiredSeconds) * 100, 100)}%` }}
                 />
               </div>
-              <p className="text-xs text-warm-gray-300 mt-1 flex items-center gap-1">
+              <p className="text-xs text-[#6b7280] mt-1 flex items-center gap-1">
                 <Lock size={10} />
                 動画視聴中はスキップ不可です
               </p>
@@ -254,17 +254,17 @@ export default function MissionFlow({ campaign, questions, existingMission, user
       {step === 'quiz' && (
         <div className="card p-5 space-y-4">
           <h2 className="font-bold text-lg flex items-center gap-2">
-            <span className="w-6 h-6 bg-notion-blue text-white rounded-full flex items-center justify-center text-xs">2</span>
+            <span className="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs">2</span>
             理解度クイズ
           </h2>
           {questions.length === 0 ? (
             <div className="text-center py-4">
-              <p className="text-sm text-warm-gray-500 mb-4">このクイズはありません</p>
+              <p className="text-sm text-[#b8bcc8] mb-4">このクイズはありません</p>
               <button onClick={() => setStep('cta')} className="btn-primary px-6">次へ進む →</button>
             </div>
           ) : (
             <>
-              <div className="flex justify-between text-xs text-warm-gray-500">
+              <div className="flex justify-between text-xs text-[#b8bcc8]">
                 <span>問 {currentQ + 1} / {questions.length}</span>
                 <span>60%以上で合格</span>
               </div>
@@ -283,8 +283,8 @@ export default function MissionFlow({ campaign, questions, existingMission, user
                         isAnswered
                           ? isCorrect ? 'border-green-400 bg-green-50 text-green-800'
                             : isSelected ? 'border-red-300 bg-red-50 text-red-700'
-                            : 'border-[rgba(0,0,0,0.06)] text-warm-gray-300'
-                          : 'border-[rgba(0,0,0,0.1)] hover:border-notion-blue hover:bg-badge-blue-bg'
+                            : 'border-[rgba(0,0,0,0.06)] text-[#6b7280]'
+                          : 'border-[rgba(0,0,0,0.1)] hover:border-green-500 hover:bg-bg-blue-500/10'
                       }`}>
                       <span className="mr-2 font-bold">{['A','B','C','D'][i]}.</span>{opt}
                     </button>
@@ -311,20 +311,20 @@ export default function MissionFlow({ campaign, questions, existingMission, user
       {step === 'cta' && (
         <div className="card p-5 space-y-4">
           <h2 className="font-bold text-lg flex items-center gap-2">
-            <span className="w-6 h-6 bg-notion-blue text-white rounded-full flex items-center justify-center text-xs">3</span>
+            <span className="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs">3</span>
             アクションを実行する
           </h2>
-          <div className="bg-badge-blue-bg border border-notion-blue/20 rounded-xl p-4 text-center">
-            <div className="text-3xl font-bold text-notion-blue mb-1">{formatCurrency(campaign.reward_amount)}</div>
-            <div className="text-sm text-warm-gray-500">アクション完了で報酬獲得</div>
+          <div className="bg-bg-blue-500/10 border border-green-500/20 rounded-xl p-4 text-center">
+            <div className="text-3xl font-bold text-green-400 mb-1">{formatCurrency(campaign.reward_amount)}</div>
+            <div className="text-sm text-[#b8bcc8]">アクション完了で報酬獲得</div>
           </div>
           <ol className="space-y-2 text-sm">
             {['下の「{label}」ボタンをタップ'.replace('{label}', campaign.cta_label),
               '必要事項を入力して申し込みを完了',
               'このページに戻って「完了を報告」をタップ'].map((s, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="w-5 h-5 bg-badge-blue-bg text-notion-blue rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">{i+1}</span>
-                <span className="text-warm-gray-500">{s}</span>
+                <span className="w-5 h-5 bg-bg-blue-500/10 text-green-400 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">{i+1}</span>
+                <span className="text-[#b8bcc8]">{s}</span>
               </li>
             ))}
           </ol>
@@ -336,7 +336,7 @@ export default function MissionFlow({ campaign, questions, existingMission, user
           </a>
           {ctaClicked && (
             <div className="border-t border-[rgba(0,0,0,0.06)] pt-4">
-              <p className="text-sm text-warm-gray-500 mb-3">申し込みが完了しましたか？</p>
+              <p className="text-sm text-[#b8bcc8] mb-3">申し込みが完了しましたか？</p>
               {error && (
                 <div className="flex items-center gap-2 text-orange-700 bg-orange-50 p-3 rounded-xl text-sm mb-3">
                   <AlertCircle size={14} />{error}
@@ -356,10 +356,10 @@ export default function MissionFlow({ campaign, questions, existingMission, user
         <div className="card p-8 text-center space-y-4">
           <div className="text-5xl">🎉</div>
           <h2 className="text-2xl font-bold">ミッション完了！</h2>
-          <p className="text-warm-gray-500 text-sm">成果確認後に報酬が付与されます（通常1〜3営業日）</p>
-          <div className="bg-badge-blue-bg rounded-xl p-4">
-            <div className="text-3xl font-bold text-notion-blue">{formatCurrency(campaign.reward_amount)}</div>
-            <div className="text-sm text-warm-gray-500 mt-1">確定予定報酬</div>
+          <p className="text-[#b8bcc8] text-sm">成果確認後に報酬が付与されます（通常1〜3営業日）</p>
+          <div className="bg-bg-blue-500/10 rounded-xl p-4">
+            <div className="text-3xl font-bold text-green-400">{formatCurrency(campaign.reward_amount)}</div>
+            <div className="text-sm text-[#b8bcc8] mt-1">確定予定報酬</div>
           </div>
           <a href="/campaigns" className="btn-primary inline-block px-8 py-3">
             次の案件を探す →

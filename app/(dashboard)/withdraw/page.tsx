@@ -77,15 +77,15 @@ export default function WithdrawPage() {
   return (
     <div className="space-y-6 pb-20 md:pb-0 max-w-lg mx-auto">
       <div className="flex items-center gap-2">
-        <Wallet size={20} className="text-notion-blue" />
+        <Wallet size={20} className="text-green-400" />
         <h1 className="text-2xl font-bold tracking-tight">出金申請</h1>
       </div>
 
       {/* Balance */}
       <div className="card p-5 text-center">
-        <div className="text-xs text-warm-gray-500 mb-1">利用可能残高</div>
-        <div className="text-4xl font-bold text-notion-blue">{formatCurrency(balance)}</div>
-        <div className="text-xs text-warm-gray-300 mt-1">最低出金額: ¥1,000</div>
+        <div className="text-xs text-[#b8bcc8] mb-1">利用可能残高</div>
+        <div className="text-4xl font-bold text-green-400">{formatCurrency(balance)}</div>
+        <div className="text-xs text-[#6b7280] mt-1">最低出金額: ¥1,000</div>
       </div>
 
       {success && (
@@ -109,8 +109,8 @@ export default function WithdrawPage() {
                 <button key={m.value} type="button" onClick={() => setMethod(m.value)}
                   className={`p-3 rounded-xl border text-sm font-medium transition-all text-center ${
                     method === m.value
-                      ? 'border-notion-blue bg-badge-blue-bg text-notion-blue'
-                      : 'border-[rgba(0,0,0,0.1)] text-warm-gray-500 hover:border-notion-blue'
+                      ? 'border-green-500 bg-bg-blue-500/10 text-green-400'
+                      : 'border-[rgba(0,0,0,0.1)] text-[#b8bcc8] hover:border-green-500'
                   }`}>
                   <div className="text-xl mb-0.5">{m.icon}</div>
                   {m.label}
@@ -123,14 +123,14 @@ export default function WithdrawPage() {
           <div>
             <label className="block text-sm font-medium mb-1">出金金額</label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-warm-gray-500 font-medium">¥</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#b8bcc8] font-medium">¥</span>
               <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
                 className="input pl-7" placeholder="1000" min="1000" max={balance} required />
             </div>
             <div className="flex gap-2 mt-1.5">
               {[1000, 3000, 5000, balance].map(v => (
                 <button key={v} type="button" onClick={() => setAmount(String(v))}
-                  className="text-xs px-2 py-1 bg-warm-white rounded-lg text-warm-gray-500 hover:text-notion-blue transition-colors">
+                  className="text-xs px-2 py-1 bg-[#0e1014] rounded-lg text-[#b8bcc8] hover:text-green-400 transition-colors">
                   {v === balance ? '全額' : formatCurrency(v)}
                 </button>
               ))}
@@ -143,7 +143,7 @@ export default function WithdrawPage() {
               <label className="block text-sm font-medium">振込先情報</label>
               {BANK_FIELDS.map(f => (
                 <div key={f.key}>
-                  <label className="block text-xs text-warm-gray-500 mb-0.5">{f.label}</label>
+                  <label className="block text-xs text-[#b8bcc8] mb-0.5">{f.label}</label>
                   <input className="input" placeholder={f.placeholder} required
                     onChange={e => setAccountInfo(prev => ({ ...prev, [f.key]: e.target.value }))} />
                 </div>
@@ -171,7 +171,7 @@ export default function WithdrawPage() {
             </div>
           )}
 
-          <div className="bg-warm-white rounded-xl p-3 text-xs text-warm-gray-500 space-y-1">
+          <div className="bg-[#0e1014] rounded-xl p-3 text-xs text-[#b8bcc8] space-y-1">
             <p>• 振込手数料は弊社負担</p>
             <p>• 処理時間: 1〜3営業日</p>
             <p>• 年間50万円超の場合、支払調書を発行します</p>
@@ -186,9 +186,9 @@ export default function WithdrawPage() {
 
       {balance < 1000 && (
         <div className="card p-6 text-center">
-          <AlertCircle size={32} className="mx-auto text-warm-gray-300 mb-2" />
+          <AlertCircle size={32} className="mx-auto text-[#6b7280] mb-2" />
           <p className="font-semibold text-sm">残高が不足しています</p>
-          <p className="text-xs text-warm-gray-500 mt-1">最低出金額¥1,000以上になると出金できます</p>
+          <p className="text-xs text-[#b8bcc8] mt-1">最低出金額¥1,000以上になると出金できます</p>
           <a href="/campaigns" className="btn-primary inline-block mt-4 px-6">案件を探す →</a>
         </div>
       )}
@@ -205,8 +205,8 @@ export default function WithdrawPage() {
                 <div>
                   <div className="text-sm font-medium">{METHODS.find(m => m.value === h.method)?.label}</div>
                   <div className="flex items-center gap-1.5 mt-0.5">
-                    <Clock size={10} className="text-warm-gray-300" />
-                    <span className="text-xs text-warm-gray-300">{new Date(h.created_at).toLocaleDateString('ja-JP')}</span>
+                    <Clock size={10} className="text-[#6b7280]" />
+                    <span className="text-xs text-[#6b7280]">{new Date(h.created_at).toLocaleDateString('ja-JP')}</span>
                   </div>
                 </div>
                 <div className="text-right">
@@ -214,7 +214,7 @@ export default function WithdrawPage() {
                   <span className={`text-[10px] px-1.5 py-0.5 rounded-pill font-medium ${
                     h.status === 'completed' ? 'bg-green-50 text-green-700' :
                     h.status === 'processing' ? 'bg-blue-50 text-blue-700' :
-                    h.status === 'failed' ? 'bg-red-50 text-red-700' : 'bg-warm-white text-warm-gray-500'
+                    h.status === 'failed' ? 'bg-red-50 text-red-700' : 'bg-[#0e1014] text-[#b8bcc8]'
                   }`}>
                     {h.status === 'completed' ? '振込完了' : h.status === 'processing' ? '処理中' : h.status === 'failed' ? '失敗' : '申請中'}
                   </span>

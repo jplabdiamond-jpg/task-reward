@@ -10,16 +10,16 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const { data: profile } = await supabase
     .from('tr_users')
-    .select('nickname,rank,balance,level,avatar_url')
+    .select('nickname,rank,balance,confirmed_balance,pending_balance,level,avatar_url')
     .eq('id', user.id)
     .single()
 
   return (
-    <div className="min-h-screen bg-warm-white flex">
+    <div className="min-h-screen bg-[#0e1014] flex">
       <Sidebar profile={profile} />
       <div className="flex-1 flex flex-col min-w-0">
         <MobileNav profile={profile} />
-        <main className="flex-1 p-4 md:p-6 max-w-5xl w-full mx-auto">
+        <main className="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto pb-24 md:pb-8">
           {children}
         </main>
       </div>
