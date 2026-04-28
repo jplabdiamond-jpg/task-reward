@@ -1,7 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createServerClient } from '@supabase/ssr'
 
 export const runtime = 'edge'
+
+// Service Role クライアント（RLSをバイパスして書き込み・カウント）
+// 公開エンドポイントから tr_contact_inquiries に anon が直接INSERTすると
+// .select('id').single() 時にRLS SELECTポリシーで拒否されるため、
+// 書き込みは service_role 経由に統一する
+function adminClient() {
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { cookies: { getAll: () => [], setAll: () => {} } }
+  )
+}
 
 const CATEGORIES = ['account', 'withdraw', 'reward', 'bug', 'partnership', 'other'] as const
 type Category = typeof CATEGORIES[number]
@@ -123,8 +136,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'お問い合わせ内容は10文字以上で入力してください' }, { status: 400 })
     }
 
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    // 認証ユーザー判定はユーザーセッション側で行う（任意）
+    const userClient = await createClient()
+    const { data: { user } } = await userClient.auth.getUser()
+
+    // 書き込み・カウントは service_role を使用（RLSをバイパス）
+    const admin = adminClient()
 
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
       || req.headers.get('x-real-ip')
@@ -134,7 +151,7 @@ export async function POST(req: NextRequest) {
     // 簡易レート制限: 同一IPから直近10分以内に5件超は拒否（スパム対策）
     if (ip) {
       const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString()
-      const { count } = await supabase
+      const { count } = await admin
         .from('tr_contact_inquiries')
         .select('id', { count: 'exact', head: true })
         .eq('ip_address', ip)
@@ -145,7 +162,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await admin
       .from('tr_contact_inquiries')
       .insert({
         user_id: user?.id ?? null,
