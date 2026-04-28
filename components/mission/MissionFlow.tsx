@@ -361,7 +361,7 @@ export default function MissionFlow({ campaign, questions, existingMission, user
             <div className="text-3xl font-bold text-green-400">{formatCurrency(campaign.reward_amount)}</div>
             <div className="text-sm text-[#b8bcc8] mt-1">確定予定報酬</div>
           </div>
-          <a href="/campaigns" className="btn-primary inline-block px-8 py-3">
+          <a href="/earn" className="btn-primary inline-block px-8 py-3">
             次の案件を探す →
           </a>
         </div>

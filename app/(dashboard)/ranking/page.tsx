@@ -96,7 +96,7 @@ export default async function RankingPage() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
                 <span className="text-sm font-medium truncate">{u.nickname}</span>
-                {u.id === user!.id && <span className="badge text-[9px] px-1.5">あなた</span>}
+                {u.id === user!.id && <span className="badge-blue text-[9px] px-1.5">あなた</span>}
               </div>
               <div className="text-xs text-[#b8bcc8]">
                 <span style={{ color: getRankColor(u.rank) }}>●</span>{' '}

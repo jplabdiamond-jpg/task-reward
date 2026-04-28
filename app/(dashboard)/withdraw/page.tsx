@@ -189,7 +189,7 @@ export default function WithdrawPage() {
           <AlertCircle size={32} className="mx-auto text-[#6b7280] mb-2" />
           <p className="font-semibold text-sm">残高が不足しています</p>
           <p className="text-xs text-[#b8bcc8] mt-1">最低出金額¥1,000以上になると出金できます</p>
-          <a href="/campaigns" className="btn-primary inline-block mt-4 px-6">案件を探す →</a>
+          <a href="/earn" className="btn-primary inline-block mt-4 px-6">案件を探す →</a>
         </div>
       )}
 

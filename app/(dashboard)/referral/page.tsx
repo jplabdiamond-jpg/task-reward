@@ -58,7 +58,7 @@ export default function ReferralPage() {
                 <div className="font-semibold text-sm">{r.level}</div>
                 <div className="text-xs text-[#b8bcc8]">{r.desc}</div>
               </div>
-              <div className="badge text-[10px]">{r.bonus}</div>
+              <div className="badge-yellow text-[10px]">{r.bonus}</div>
             </div>
           ))}
         </div>
