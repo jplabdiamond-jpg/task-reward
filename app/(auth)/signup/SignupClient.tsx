@@ -22,21 +22,45 @@ function SignupForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPw, setShowPw] = useState(false)
-  const [agreed, setAgreed] = useState(false)
+  const [agreedTerms, setAgreedTerms] = useState(false)
+  const [agreedAge18, setAgreedAge18] = useState(false)
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [lineLoading, setLineLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleLine = () => {
-    if (!agreed) { setError('利用規約・業務委託契約に同意してください'); return }
+  const allAgreed = agreedTerms && agreedAge18
+
+  // 18歳以上 + 規約同意 + 捨てメアドチェックをサーバ側で実行
+  // 通過時、agreed_*_at タイムスタンプを取得して user_metadata に格納する
+  async function precheck(emailToCheck: string): Promise<{
+    ok: true
+    agreedAge18At: string
+    agreedTermsAt: string
+    agreedTermsVersion: string
+  }> {
+    const res = await fetch('/api/auth/signup-precheck', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: emailToCheck, agreedAge18, agreedTerms }),
+    })
+    const data = await res.json()
+    if (!res.ok || !data.ok) {
+      throw new Error(data.error || '事前チェックに失敗しました')
+    }
+    return data
+  }
+
+  const handleLine = async () => {
+    if (!allAgreed) { setError('利用規約と18歳以上の確認の両方に同意してください'); return }
     setLineLoading(true)
     setError(null)
+    // LINE/Googleはメール取得が後段になるため、ここでは同意フラグのみ確認
     window.location.href = `/api/auth/line/start?next=/dashboard`
   }
 
   const handleGoogle = async () => {
-    if (!agreed) { setError('利用規約・業務委託契約に同意してください'); return }
+    if (!allAgreed) { setError('利用規約と18歳以上の確認の両方に同意してください'); return }
     setGoogleLoading(true)
     setError(null)
     try {
@@ -58,16 +82,25 @@ function SignupForm() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!agreed) { setError('利用規約・業務委託契約に同意してください'); return }
+    if (!allAgreed) { setError('利用規約と18歳以上の確認の両方に同意してください'); return }
     if (password.length < 8) { setError('パスワードは8文字以上で設定してください'); return }
 
     setLoading(true)
     setError(null)
     try {
+      const pre = await precheck(email)
       const supabase = createClient()
       const { error: authError } = await supabase.auth.signUp({
         email, password,
-        options: { data: { nickname, referral_code: refCode } },
+        options: {
+          data: {
+            nickname,
+            referral_code: refCode,
+            agreed_age_18_at: pre.agreedAge18At,
+            agreed_terms_at: pre.agreedTermsAt,
+            agreed_terms_version: pre.agreedTermsVersion,
+          },
+        },
       })
       if (authError) throw authError
       router.push('/dashboard')
@@ -177,16 +210,25 @@ function SignupForm() {
                 <span>紹介コード: <strong>{refCode}</strong> が適用されます</span>
               </div>
             )}
-            <label className="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
-                className="mt-0.5 w-4 h-4 accent-green-500" />
-              <span className="text-xs text-[#b8bcc8] leading-relaxed">
-                <Link href="/terms" className="text-green-400 hover:underline">利用規約</Link>・
-                <Link href="/privacy" className="text-green-400 hover:underline">プライバシーポリシー</Link>・
-                業務委託基本契約に同意します
-              </span>
-            </label>
-            <button type="submit" disabled={loading || !agreed}
+            <div className="space-y-2">
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" checked={agreedTerms} onChange={e => setAgreedTerms(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 accent-green-500" />
+                <span className="text-xs text-[#b8bcc8] leading-relaxed">
+                  <Link href="/terms" className="text-green-400 hover:underline">利用規約</Link>・
+                  <Link href="/privacy" className="text-green-400 hover:underline">プライバシーポリシー</Link>・
+                  業務委託基本契約に同意します
+                </span>
+              </label>
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" checked={agreedAge18} onChange={e => setAgreedAge18(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 accent-green-500" />
+                <span className="text-xs text-[#b8bcc8] leading-relaxed">
+                  私は <strong className="text-white">18歳以上</strong> です（18歳未満の方はご利用いただけません）
+                </span>
+              </label>
+            </div>
+            <button type="submit" disabled={loading || !allAgreed}
               className="btn-primary w-full py-3 flex items-center justify-center gap-2 disabled:opacity-50">
               {loading ? <><Loader2 size={16} className="animate-spin" />登録中...</> : '無料で登録する'}
             </button>

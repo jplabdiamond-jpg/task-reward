@@ -88,6 +88,37 @@ export default function WithdrawPage() {
         <div className="text-xs text-[#6b7280] mt-1">最低出金額: ¥1,000</div>
       </div>
 
+      {/* 出金条件 案内ボックス（ASP審査要件: 透明性確保） */}
+      <div className="card p-4 bg-[#0e1014] border border-[rgba(255,255,255,0.04)]">
+        <div className="text-xs font-bold text-[#b8bcc8] mb-2">出金に関する重要事項</div>
+        <ul className="space-y-1.5 text-xs text-[#b8bcc8]">
+          <li className="flex gap-2">
+            <span className="text-green-400 shrink-0">•</span>
+            <span><strong className="text-white">最低出金額:</strong> ¥1,000（未満は次回繰越）</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-green-400 shrink-0">•</span>
+            <span><strong className="text-white">振込手数料:</strong> 無料（運営負担）</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-green-400 shrink-0">•</span>
+            <span><strong className="text-white">処理時間:</strong> 1〜3営業日</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-green-400 shrink-0">•</span>
+            <span><strong className="text-white">本人確認:</strong> 累計¥30,000を超える出金時に本人確認書類の提出をお願いする場合があります（マネー・ローンダリング対策）</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-green-400 shrink-0">•</span>
+            <span><strong className="text-white">税務:</strong> 年間¥200,000を超えた場合、雑所得として確定申告が必要です</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-green-400 shrink-0">•</span>
+            <span><strong className="text-white">確定残高のみ出金可:</strong> ASP承認待ちの未確定残高は出金できません（<a href="/about-rewards" className="text-green-400 hover:underline">詳細</a>）</span>
+          </li>
+        </ul>
+      </div>
+
       {success && (
         <div className="flex items-center gap-2 bg-green-50 border border-green-200 text-green-800 p-4 rounded-xl">
           <CheckCircle size={16} />

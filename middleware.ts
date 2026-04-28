@@ -6,6 +6,7 @@ const PUBLIC_EXACT = new Set([
   '/', '/login', '/signup',
   '/terms', '/privacy', '/tokushoho',
   '/guide', '/faq', '/news', '/contact',
+  '/about', '/about-rewards',
   '/sitemap.xml', '/robots.txt',
 ])
 // プレフィックス一致で公開（動的ルート含む）
