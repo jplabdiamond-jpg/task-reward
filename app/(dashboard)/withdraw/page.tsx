@@ -88,6 +88,32 @@ export default function WithdrawPage() {
         <div className="text-xs text-[#6b7280] mt-1">最低出金額: ¥1,000</div>
       </div>
 
+      {/* 出金手段別 比較表（ASP審査要件: 振込手段の明確化） */}
+      <div className="card p-4">
+        <div className="text-xs font-bold text-[#b8bcc8] mb-3">出金手段の比較</div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead className="border-b border-[rgba(255,255,255,0.06)]">
+              <tr className="text-left text-[#6b7280]">
+                <th className="py-2 pr-2">手段</th>
+                <th className="py-2 pr-2 text-right">最低額</th>
+                <th className="py-2 pr-2 text-right">手数料</th>
+                <th className="py-2 pr-2">処理時間</th>
+                <th className="py-2">本人確認</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[rgba(255,255,255,0.04)]">
+              <tr><td className="py-2 pr-2">🔵 PayPay</td><td className="py-2 pr-2 text-right">¥1,000</td><td className="py-2 pr-2 text-right text-green-400">無料</td><td className="py-2 pr-2">1〜3営業日</td><td className="py-2 text-[#6b7280]">¥30,000超で必要</td></tr>
+              <tr><td className="py-2 pr-2">🏦 銀行振込</td><td className="py-2 pr-2 text-right">¥1,000</td><td className="py-2 pr-2 text-right text-green-400">無料</td><td className="py-2 pr-2">1〜3営業日</td><td className="py-2 text-[#6b7280]">¥30,000超で必要</td></tr>
+              <tr><td className="py-2 pr-2">📦 Amazonギフト</td><td className="py-2 pr-2 text-right">¥1,000</td><td className="py-2 pr-2 text-right text-green-400">無料</td><td className="py-2 pr-2">即日〜翌営業日</td><td className="py-2 text-[#6b7280]">不要</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-[10px] text-[#6b7280] mt-2 leading-relaxed">
+          ※ 暗号通貨(USDT等)送金は今後追加予定です。ネットワーク手数料はユーザー負担となります。
+        </p>
+      </div>
+
       {/* 出金条件 案内ボックス（ASP審査要件: 透明性確保） */}
       <div className="card p-4 bg-[#0e1014] border border-[rgba(255,255,255,0.04)]">
         <div className="text-xs font-bold text-[#b8bcc8] mb-2">出金に関する重要事項</div>

@@ -10,7 +10,9 @@
  * （DBへのagreed_*_at記録は signup後の users insert か、後続のpost-confirmで実施）
  */
 import { NextRequest, NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 import { isDisposableEmail, getEmailDomain } from '@/lib/auth/disposable-email-domains'
+import { checkIpSignupRateLimit, checkSelfReferral } from '@/lib/fraud/signup-checks'
 
 export const runtime = 'edge'
 
@@ -18,6 +20,15 @@ interface PrecheckPayload {
   email?: string
   agreedAge18?: boolean
   agreedTerms?: boolean
+  referralCode?: string | null
+}
+
+function adminClient() {
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { cookies: { getAll: () => [], setAll: () => {} } }
+  )
 }
 
 export async function POST(req: NextRequest) {
@@ -56,12 +67,31 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // 不正検知: IP起点の連続登録、自己アフィリ
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      || req.headers.get('x-real-ip')
+      || null
+    const referralCode = body.referralCode ? String(body.referralCode).trim() : null
+
+    const admin = adminClient()
+    // service_role により RLS をバイパスして tr_users 集計
+    const ipCheck = await checkIpSignupRateLimit(admin as never, ip)
+    if (!ipCheck.ok) {
+      return NextResponse.json({ ok: false, error: ipCheck.message }, { status: 429 })
+    }
+    const refCheck = await checkSelfReferral(admin as never, referralCode, ip)
+    if (!refCheck.ok) {
+      return NextResponse.json({ ok: false, error: refCheck.message }, { status: 400 })
+    }
+
     const now = new Date().toISOString()
     return NextResponse.json({
       ok: true,
       agreedAge18At: now,
       agreedTermsAt: now,
       agreedTermsVersion: '2026-04-28',
+      // 後段の supabase.auth.signUp -> trigger create_tr_user に渡すために返却
+      signupIp: ip,
     })
   } catch (e) {
     console.error('[signup-precheck] exception', e)

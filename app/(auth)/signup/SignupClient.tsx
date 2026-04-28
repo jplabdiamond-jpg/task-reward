@@ -42,7 +42,7 @@ function SignupForm() {
     const res = await fetch('/api/auth/signup-precheck', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailToCheck, agreedAge18, agreedTerms }),
+      body: JSON.stringify({ email: emailToCheck, agreedAge18, agreedTerms, referralCode: refCode || null }),
     })
     const data = await res.json()
     if (!res.ok || !data.ok) {

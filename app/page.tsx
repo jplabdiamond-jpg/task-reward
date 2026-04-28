@@ -151,14 +151,25 @@ export default function HomePage() {
                 </div>
                 <span className="font-black text-base">Tas Money</span>
               </div>
-              <p className="text-xs text-[#6b7280] leading-relaxed">
+              <p className="text-xs text-[#6b7280] leading-relaxed mb-3">
                 タスクで稼ぐ業務委託型報酬プラットフォーム
               </p>
+              <div className="flex items-center gap-2">
+                <a href="https://x.com/tasmoney_jp" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
+                   className="w-8 h-8 rounded-lg bg-[#1a1d24] hover:bg-[#2a2f3d] flex items-center justify-center text-[#b8bcc8] hover:text-white transition-colors">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="mailto:support@task-money.net" aria-label="Email"
+                   className="w-8 h-8 rounded-lg bg-[#1a1d24] hover:bg-[#2a2f3d] flex items-center justify-center text-[#b8bcc8] hover:text-white transition-colors">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+                </a>
+              </div>
             </div>
             <div>
               <h3 className="text-sm font-bold mb-3">サービス</h3>
               <ul className="space-y-2 text-xs">
                 <li><Link href="/guide" className="text-[#b8bcc8] hover:text-white transition-colors">使い方ガイド</Link></li>
+                <li><Link href="/about-rewards" className="text-[#b8bcc8] hover:text-white transition-colors">報酬・還元率</Link></li>
                 <li><Link href="/faq" className="text-[#b8bcc8] hover:text-white transition-colors">よくある質問</Link></li>
                 <li><Link href="/news" className="text-[#b8bcc8] hover:text-white transition-colors">お知らせ</Link></li>
                 <li><Link href="/signup" className="text-[#b8bcc8] hover:text-white transition-colors">新規登録</Link></li>
@@ -170,11 +181,13 @@ export default function HomePage() {
               <ul className="space-y-2 text-xs">
                 <li><Link href="/contact" className="text-[#b8bcc8] hover:text-white transition-colors">お問い合わせ</Link></li>
                 <li><a href="mailto:support@task-money.net" className="text-[#b8bcc8] hover:text-white transition-colors break-all">support@task-money.net</a></li>
+                <li><a href="https://x.com/tasmoney_jp" target="_blank" rel="noopener noreferrer" className="text-[#b8bcc8] hover:text-white transition-colors">公式X</a></li>
               </ul>
             </div>
             <div>
               <h3 className="text-sm font-bold mb-3">運営情報</h3>
               <ul className="space-y-2 text-xs">
+                <li><Link href="/about" className="text-[#b8bcc8] hover:text-white transition-colors">会社概要・運営方針</Link></li>
                 <li><Link href="/terms" className="text-[#b8bcc8] hover:text-white transition-colors">利用規約</Link></li>
                 <li><Link href="/privacy" className="text-[#b8bcc8] hover:text-white transition-colors">プライバシーポリシー</Link></li>
                 <li><Link href="/tokushoho" className="text-[#b8bcc8] hover:text-white transition-colors">特定商取引法に基づく表記</Link></li>
