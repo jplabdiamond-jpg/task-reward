@@ -96,7 +96,7 @@ function SignupForm() {
           <button
             type="button"
             onClick={handleGoogle}
-            disabled={googleLoading || loading || !agreed}
+            disabled={googleLoading || loading}
             className="w-full py-3 mb-4 rounded-xl bg-white text-[#1f1f1f] font-bold flex items-center justify-center gap-2.5 hover:bg-gray-100 active:bg-gray-200 transition disabled:opacity-50"
           >
             {googleLoading ? (
