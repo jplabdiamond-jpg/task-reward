@@ -21,7 +21,15 @@ function LoginForm() {
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
+  const [lineLoading, setLineLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const handleLine = () => {
+    setLineLoading(true)
+    setError(null)
+    const next = params.get('redirect') ?? '/dashboard'
+    window.location.href = `/api/auth/line/start?next=${encodeURIComponent(next)}`
+  }
 
   useEffect(() => {
     const e = params.get('error')
@@ -102,6 +110,21 @@ function LoginForm() {
               </svg>
             )}
             Googleでログイン
+          </button>
+          <button
+            type="button"
+            onClick={handleLine}
+            disabled={lineLoading || googleLoading || loading}
+            className="w-full py-3 mb-4 rounded-xl bg-[#06C755] text-white font-bold flex items-center justify-center gap-2.5 hover:bg-[#05b34c] active:bg-[#04a043] transition disabled:opacity-50"
+          >
+            {lineLoading ? (
+              <Loader2 size={18} className="animate-spin" />
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                <path d="M18 3C9.716 3 3 8.474 3 15.227c0 6.054 5.323 11.124 12.514 12.084.487.105 1.15.32 1.318.736.151.378.099.97.048 1.353l-.214 1.282c-.066.378-.301 1.479 1.296.806 1.598-.673 8.62-5.075 11.76-8.69C31.86 20.4 33 17.95 33 15.227 33 8.474 26.284 3 18 3zM11.39 18.815H8.426c-.43 0-.78-.35-.78-.78v-5.928c0-.43.35-.78.78-.78.43 0 .78.35.78.78v5.148h2.184c.43 0 .78.35.78.78 0 .43-.35.78-.78.78zm2.34-.78c0 .43-.35.78-.78.78-.43 0-.78-.35-.78-.78v-5.928c0-.43.35-.78.78-.78.43 0 .78.35.78.78v5.928zm7.092 0c0 .337-.214.635-.531.747-.084.027-.171.04-.255.04-.249 0-.485-.115-.638-.32l-3.04-4.13v3.663c0 .43-.35.78-.78.78-.43 0-.78-.35-.78-.78v-5.928c0-.337.214-.635.531-.747.085-.03.176-.044.265-.044.246 0 .482.116.633.318l3.04 4.135v-3.665c0-.43.35-.78.78-.78.43 0 .78.35.78.78v5.928c0 .002 0 .003-.003.005zm4.776-3.745c.43 0 .78.35.78.78 0 .43-.35.78-.78.78h-2.184v1.404h2.184c.43 0 .78.35.78.78 0 .43-.35.78-.78.78h-2.964c-.43 0-.78-.35-.78-.78v-5.928c0-.43.35-.78.78-.78h2.964c.43 0 .78.35.78.78 0 .43-.35.78-.78.78h-2.184v1.404h2.184z"/>
+              </svg>
+            )}
+            LINEでログイン
           </button>
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-1 h-px bg-[#2a2f3d]" />
