@@ -3,6 +3,8 @@ import { ArrowLeft, Mail, MessageCircle, Clock } from 'lucide-react'
 import type { Metadata } from 'next'
 import ContactForm from './ContactForm'
 
+export const runtime = 'edge'
+
 export const metadata: Metadata = {
   title: 'お問い合わせ | Tas Money',
   description: 'Tas Moneyへのお問い合わせ。ご質問・ご要望・不具合報告等を受け付けています。',

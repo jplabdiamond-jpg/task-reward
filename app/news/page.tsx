@@ -3,6 +3,8 @@ import { ArrowLeft, Megaphone, Sparkles, Settings, Wrench, AlertCircle } from 'l
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 
+export const runtime = 'edge'
+
 export const metadata: Metadata = {
   title: 'お知らせ | Tas Money',
   description: 'Tas Moneyからの最新のお知らせ・キャンペーン・メンテナンス情報。',

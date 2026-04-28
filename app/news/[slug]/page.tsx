@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 
+export const runtime = 'edge'
 export const revalidate = 60
 
 const CATEGORY_META: Record<string, { label: string; icon: any; color: string; bg: string }> = {

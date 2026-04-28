@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import type { Metadata } from 'next'
 
+export const runtime = 'edge'
+
 export const metadata: Metadata = {
   title: '特定商取引法に基づく表記 | Tas Money',
   description: 'Tas Moneyの特定商取引法に基づく表記。事業者情報・支払方法・支払時期等。',

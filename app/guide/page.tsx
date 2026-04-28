@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { ArrowLeft, UserPlus, Search, ClipboardCheck, Wallet, ShieldCheck, TrendingUp, Gift, ArrowRight } from 'lucide-react'
 import type { Metadata } from 'next'
 
+export const runtime = 'edge'
+
 export const metadata: Metadata = {
   title: '使い方ガイド | Tas Money',
   description: '登録から報酬獲得・出金までの流れを4ステップで解説。',

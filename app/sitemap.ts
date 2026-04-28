@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next'
 import { createClient } from '@/lib/supabase/server'
 
+export const runtime = 'edge'
+
 const SITE_URL = 'https://task-money.net'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

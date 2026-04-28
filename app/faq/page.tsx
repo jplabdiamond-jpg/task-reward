@@ -3,6 +3,8 @@ import { ArrowLeft } from 'lucide-react'
 import type { Metadata } from 'next'
 import FaqClient from './FaqClient'
 
+export const runtime = 'edge'
+
 export const metadata: Metadata = {
   title: 'よくある質問 (FAQ) | Tas Money',
   description: 'Tas Moneyに関するよくある質問。登録・報酬・出金・トラブル対応を網羅。',
