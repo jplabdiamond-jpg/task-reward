@@ -131,6 +131,20 @@ export async function POST(req: NextRequest) {
       || null
     const ua = req.headers.get('user-agent') || null
 
+    // 簡易レート制限: 同一IPから直近10分以内に5件超は拒否（スパム対策）
+    if (ip) {
+      const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString()
+      const { count } = await supabase
+        .from('tr_contact_inquiries')
+        .select('id', { count: 'exact', head: true })
+        .eq('ip_address', ip)
+        .gte('created_at', tenMinAgo)
+      if ((count ?? 0) >= 5) {
+        console.warn('[contact] rate limit hit', { ip, count })
+        return NextResponse.json({ error: '短時間に多数の送信が検出されました。しばらく時間をおいて再度お試しください。' }, { status: 429 })
+      }
+    }
+
     const { data, error } = await supabase
       .from('tr_contact_inquiries')
       .insert({

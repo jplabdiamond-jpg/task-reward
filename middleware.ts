@@ -11,7 +11,26 @@ const PUBLIC_EXACT = new Set([
 // プレフィックス一致で公開（動的ルート含む）
 const PUBLIC_PREFIXES = ['/news/', '/api/', '/_next/', '/auth/']
 
+// 正規ホスト（独自ドメイン）。pages.dev / www からの流入を 301 で集約
+const CANONICAL_HOST = 'task-money.net'
+
 export async function middleware(request: NextRequest) {
+  // ホスト正規化（本番環境のみ）
+  const host = request.headers.get('host') || ''
+  const isProd = process.env.NODE_ENV === 'production'
+  if (
+    isProd &&
+    host &&
+    host !== CANONICAL_HOST &&
+    (host.endsWith('.pages.dev') || host === `www.${CANONICAL_HOST}`)
+  ) {
+    const url = request.nextUrl.clone()
+    url.host = CANONICAL_HOST
+    url.protocol = 'https:'
+    url.port = ''
+    return NextResponse.redirect(url, 301)
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
