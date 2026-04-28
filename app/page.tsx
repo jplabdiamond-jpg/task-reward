@@ -26,13 +26,19 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#0e1014]">
       {/* Nav */}
       <nav className="border-b border-[#2a2f3d] bg-[#0e1014]/90 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center font-black text-black">
               TM
             </div>
             <span className="font-black text-lg tracking-tight">Tas Money</span>
           </Link>
+          <div className="hidden md:flex items-center gap-1">
+            <Link href="/guide" className="px-3 py-2 text-sm font-semibold text-[#b8bcc8] hover:text-white transition-colors">使い方</Link>
+            <Link href="/faq" className="px-3 py-2 text-sm font-semibold text-[#b8bcc8] hover:text-white transition-colors">FAQ</Link>
+            <Link href="/news" className="px-3 py-2 text-sm font-semibold text-[#b8bcc8] hover:text-white transition-colors">お知らせ</Link>
+            <Link href="/contact" className="px-3 py-2 text-sm font-semibold text-[#b8bcc8] hover:text-white transition-colors">問い合わせ</Link>
+          </div>
           <div className="flex items-center gap-2">
             <Link href="/login" className="hidden sm:inline px-4 py-2 text-sm font-semibold text-[#b8bcc8] hover:text-white transition-colors">
               ログイン
@@ -135,11 +141,50 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#2a2f3d] py-8 text-center text-xs text-[#6b7280]">
-        <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-6">
-          <Link href="/terms" className="hover:text-white transition-colors">利用規約</Link>
-          <Link href="/privacy" className="hover:text-white transition-colors">プライバシーポリシー</Link>
-          <span>© 2026 Tas Money</span>
+      <footer className="border-t border-[#2a2f3d] mt-12">
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center font-black text-black text-sm">
+                  TM
+                </div>
+                <span className="font-black text-base">Tas Money</span>
+              </div>
+              <p className="text-xs text-[#6b7280] leading-relaxed">
+                タスクで稼ぐ業務委託型報酬プラットフォーム
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-bold mb-3">サービス</h3>
+              <ul className="space-y-2 text-xs">
+                <li><Link href="/guide" className="text-[#b8bcc8] hover:text-white transition-colors">使い方ガイド</Link></li>
+                <li><Link href="/faq" className="text-[#b8bcc8] hover:text-white transition-colors">よくある質問</Link></li>
+                <li><Link href="/news" className="text-[#b8bcc8] hover:text-white transition-colors">お知らせ</Link></li>
+                <li><Link href="/signup" className="text-[#b8bcc8] hover:text-white transition-colors">新規登録</Link></li>
+                <li><Link href="/login" className="text-[#b8bcc8] hover:text-white transition-colors">ログイン</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-bold mb-3">サポート</h3>
+              <ul className="space-y-2 text-xs">
+                <li><Link href="/contact" className="text-[#b8bcc8] hover:text-white transition-colors">お問い合わせ</Link></li>
+                <li><a href="mailto:support@task-money.net" className="text-[#b8bcc8] hover:text-white transition-colors break-all">support@task-money.net</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-bold mb-3">運営情報</h3>
+              <ul className="space-y-2 text-xs">
+                <li><Link href="/terms" className="text-[#b8bcc8] hover:text-white transition-colors">利用規約</Link></li>
+                <li><Link href="/privacy" className="text-[#b8bcc8] hover:text-white transition-colors">プライバシーポリシー</Link></li>
+                <li><Link href="/tokushoho" className="text-[#b8bcc8] hover:text-white transition-colors">特定商取引法に基づく表記</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="pt-6 border-t border-[#2a2f3d] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#6b7280]">
+            <span>© 2026 Tas Money. All rights reserved.</span>
+            <span>運営: 株式会社タスマネ（仮）</span>
+          </div>
         </div>
       </footer>
     </div>

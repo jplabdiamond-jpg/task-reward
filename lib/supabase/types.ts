@@ -194,6 +194,43 @@ export interface Database {
         Insert: Omit<Database['public']['Tables']['tr_campaign_reviews']['Row'], 'created_at'>
         Update: Partial<Database['public']['Tables']['tr_campaign_reviews']['Insert']>
       }
+      tr_contact_inquiries: {
+        Row: {
+          id: string
+          user_id: string | null
+          name: string
+          email: string
+          category: 'account' | 'withdraw' | 'reward' | 'bug' | 'partnership' | 'other'
+          subject: string
+          message: string
+          status: 'open' | 'in_progress' | 'resolved' | 'closed'
+          ip_address: string | null
+          user_agent: string | null
+          admin_note: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['tr_contact_inquiries']['Row'], 'id' | 'created_at' | 'updated_at' | 'status' | 'admin_note'> & { id?: string; status?: 'open' | 'in_progress' | 'resolved' | 'closed' }
+        Update: Partial<Database['public']['Tables']['tr_contact_inquiries']['Insert']>
+      }
+      tr_notices: {
+        Row: {
+          id: string
+          slug: string
+          title: string
+          category: 'info' | 'update' | 'maintenance' | 'campaign' | 'important'
+          body_md: string
+          excerpt: string | null
+          thumbnail_url: string | null
+          is_published: boolean
+          published_at: string | null
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['tr_notices']['Row'], 'id' | 'created_at' | 'updated_at'> & { id?: string }
+        Update: Partial<Database['public']['Tables']['tr_notices']['Insert']>
+      }
     }
   }
 }
