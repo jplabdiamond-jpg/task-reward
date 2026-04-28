@@ -9,7 +9,7 @@ const PUBLIC_EXACT = new Set([
   '/sitemap.xml', '/robots.txt',
 ])
 // プレフィックス一致で公開（動的ルート含む）
-const PUBLIC_PREFIXES = ['/news/', '/api/', '/_next/']
+const PUBLIC_PREFIXES = ['/news/', '/api/', '/_next/', '/auth/']
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
