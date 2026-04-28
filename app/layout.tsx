@@ -5,11 +5,11 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  title: 'TaskReward — Earn rewards by completing tasks',
+  title: 'Tas Money — Earn rewards by completing tasks',
   description: 'タスク・アンケート・動画視聴で報酬を獲得。PayPal・暗号通貨・ギフトカードへ即時交換。',
   keywords: ['副業', '報酬', 'タスク', 'アンケート', 'ポイ活', '稼ぐ', 'offerwall'],
   openGraph: {
-    title: 'TaskReward',
+    title: 'Tas Money',
     description: 'Earn rewards by completing tasks',
     type: 'website',
   },

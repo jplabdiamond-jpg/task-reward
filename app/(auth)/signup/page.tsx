@@ -58,9 +58,9 @@ function SignupForm() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
             <div className="w-9 h-9 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center font-black text-black">
-              TR
+              TM
             </div>
-            <span className="font-black text-lg">TaskReward</span>
+            <span className="font-black text-lg">Tas Money</span>
           </Link>
           <h1 className="text-2xl font-black">無料で始める</h1>
           <p className="text-sm text-[#b8bcc8] mt-1">業務委託契約で安心・安全に稼ぐ</p>

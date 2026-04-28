@@ -42,9 +42,9 @@ export default function Sidebar({ profile }: { profile: Profile }) {
       <div className="px-5 py-5 border-b border-[#2a2f3d]">
         <Link href="/dashboard" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center font-black text-black">
-            TR
+            TM
           </div>
-          <span className="font-black text-lg">TaskReward</span>
+          <span className="font-black text-lg">Tas Money</span>
         </Link>
       </div>
 

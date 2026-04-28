@@ -37,9 +37,9 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
             <div className="w-9 h-9 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center font-black text-black">
-              TR
+              TM
             </div>
-            <span className="font-black text-lg">TaskReward</span>
+            <span className="font-black text-lg">Tas Money</span>
           </Link>
           <h1 className="text-2xl font-black">ログイン</h1>
         </div>

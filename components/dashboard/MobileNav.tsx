@@ -28,9 +28,9 @@ export default function MobileNav({ profile }: { profile: Profile }) {
         <div className="flex items-center justify-between px-4 h-14">
           <Link href="/dashboard" className="flex items-center gap-2">
             <div className="w-7 h-7 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center font-black text-black text-xs">
-              TR
+              TM
             </div>
-            <span className="font-black">TaskReward</span>
+            <span className="font-black">Tas Money</span>
           </Link>
           <Link href="/rewards" className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-lg text-amber-400 font-bold text-sm">
             🪙 {balance.toLocaleString()}

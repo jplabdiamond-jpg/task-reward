@@ -29,9 +29,9 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center font-black text-black">
-              TR
+              TM
             </div>
-            <span className="font-black text-lg tracking-tight">TaskReward</span>
+            <span className="font-black text-lg tracking-tight">Tas Money</span>
           </Link>
           <div className="flex items-center gap-2">
             <Link href="/login" className="hidden sm:inline px-4 py-2 text-sm font-semibold text-[#b8bcc8] hover:text-white transition-colors">
@@ -106,7 +106,7 @@ export default function HomePage() {
       <section className="bg-[#171a21] py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-3">なぜ TaskReward？</h2>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-3">なぜ Tas Money？</h2>
             <p className="text-[#b8bcc8]">他のポイ活サービスとは違う、本気の報酬プラットフォーム</p>
           </div>
           <div className="grid md:grid-cols-3 gap-4">
@@ -139,7 +139,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-6">
           <Link href="/terms" className="hover:text-white transition-colors">利用規約</Link>
           <Link href="/privacy" className="hover:text-white transition-colors">プライバシーポリシー</Link>
-          <span>© 2026 TaskReward</span>
+          <span>© 2026 Tas Money</span>
         </div>
       </footer>
     </div>

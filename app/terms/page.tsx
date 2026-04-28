@@ -14,7 +14,7 @@ export default function TermsPage() {
 
           <h2 className="text-lg font-bold mt-6 mb-2">第1条（本サービスについて）</h2>
           <p className="text-sm text-[#b8bcc8] leading-relaxed">
-            TaskReward（以下「本サービス」）は、ユーザーが指定のタスク（動画視聴・クイズ回答・申込等）を完了することで報酬を獲得できる業務委託型プラットフォームです。
+            Tas Money（以下「本サービス」）は、ユーザーが指定のタスク（動画視聴・クイズ回答・申込等）を完了することで報酬を獲得できる業務委託型プラットフォームです。
             本サービスにおける報酬の支払いは、民法上の業務委託契約に基づくものであり、ポイント制ではなく金銭報酬として取り扱います。
           </p>
 
@@ -56,7 +56,7 @@ export default function TermsPage() {
           </p>
 
           <div className="mt-8 p-4 bg-[#0e1014] rounded-xl text-xs text-[#6b7280]">
-            <p>運営者: TaskReward運営事務局</p>
+            <p>運営者: Tas Money運営事務局</p>
             <p>お問い合わせ: support@task-reward.jp</p>
           </div>
         </div>

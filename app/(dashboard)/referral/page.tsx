@@ -35,7 +35,7 @@ export default function ReferralPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const shareText = `TaskRewardで副業しませんか？タスクをこなして報酬を稼げます！登録はこちら → ${referralUrl}`
+  const shareText = `Tas Moneyで副業しませんか？タスクをこなして報酬を稼げます！登録はこちら → ${referralUrl}`
 
   return (
     <div className="space-y-6 pb-20 md:pb-0">
