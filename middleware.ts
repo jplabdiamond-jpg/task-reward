@@ -1,7 +1,15 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PUBLIC_ROUTES = ['/', '/login', '/signup', '/terms', '/privacy', '/api/webhooks']
+// 完全一致で公開
+const PUBLIC_EXACT = new Set([
+  '/', '/login', '/signup',
+  '/terms', '/privacy', '/tokushoho',
+  '/guide', '/faq', '/news', '/contact',
+  '/sitemap.xml', '/robots.txt',
+])
+// プレフィックス一致で公開（動的ルート含む）
+const PUBLIC_PREFIXES = ['/news/', '/api/', '/_next/']
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
@@ -25,7 +33,7 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
   const path = request.nextUrl.pathname
-  const isPublic = PUBLIC_ROUTES.some(r => path === r || path.startsWith('/api/'))
+  const isPublic = PUBLIC_EXACT.has(path) || PUBLIC_PREFIXES.some(p => path.startsWith(p))
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone()
