@@ -80,7 +80,7 @@ function LoginForm() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <img src="/logo.png" alt="Tas Money" className="w-10 h-10 rounded-xl object-cover" />
+            <img src="/logo.png" alt="Tas Money" className="w-[60px] h-[60px] rounded-xl object-cover" />
             <span className="font-black text-lg">Tas Money</span>
           </Link>
           <h1 className="text-2xl font-black">ログイン</h1>
