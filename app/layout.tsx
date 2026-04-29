@@ -50,10 +50,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico' },
+      { url: '/logo.png', type: 'image/png' },
       { url: '/icon.svg', type: 'image/svg+xml' },
     ],
-    apple: '/apple-icon.png',
+    apple: '/logo.png',
+    shortcut: '/logo.png',
   },
   verification: {
     // 必要時に Search Console / Bing Webmaster の verification コードを追加
@@ -82,7 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: 'Tas Money',
               alternateName: 'タスマネ',
               url: SITE_URL,
-              logo: `${SITE_URL}/icon.svg`,
+              logo: `${SITE_URL}/logo.png`,
               sameAs: [],
               contactPoint: {
                 '@type': 'ContactPoint',

@@ -41,9 +41,7 @@ export default function Sidebar({ profile }: { profile: Profile }) {
     <aside className="hidden md:flex flex-col w-64 bg-[#171a21] border-r border-[#2a2f3d] sticky top-0 h-screen">
       <div className="px-5 py-5 border-b border-[#2a2f3d]">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center font-black text-black">
-            TM
-          </div>
+          <img src="/logo.png" alt="Tas Money" className="w-9 h-9 rounded-xl object-cover" />
           <span className="font-black text-lg">Tas Money</span>
         </Link>
       </div>

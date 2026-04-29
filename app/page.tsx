@@ -28,9 +28,7 @@ export default function HomePage() {
       <nav className="border-b border-[#2a2f3d] bg-[#0e1014]/90 backdrop-blur sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center font-black text-black">
-              TM
-            </div>
+            <img src="/logo.png" alt="Tas Money" className="w-9 h-9 rounded-xl object-cover" />
             <span className="font-black text-lg tracking-tight">Tas Money</span>
           </Link>
           <div className="hidden md:flex items-center gap-1">
@@ -146,9 +144,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center font-black text-black text-sm">
-                  TM
-                </div>
+                <img src="/logo.png" alt="Tas Money" className="w-8 h-8 rounded-xl object-cover" />
                 <span className="font-black text-base">Tas Money</span>
               </div>
               <p className="text-xs text-[#6b7280] leading-relaxed mb-3">
