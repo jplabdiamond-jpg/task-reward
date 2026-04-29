@@ -155,7 +155,7 @@ export default function HomePage() {
                 タスクで稼ぐ業務委託型報酬プラットフォーム
               </p>
               <div className="flex items-center gap-2">
-                <a href="https://x.com/tasmoney_jp" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
+                <a href="https://x.com/TasMoney2026" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
                    className="w-8 h-8 rounded-lg bg-[#1a1d24] hover:bg-[#2a2f3d] flex items-center justify-center text-[#b8bcc8] hover:text-white transition-colors">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
@@ -181,7 +181,7 @@ export default function HomePage() {
               <ul className="space-y-2 text-xs">
                 <li><Link href="/contact" className="text-[#b8bcc8] hover:text-white transition-colors">お問い合わせ</Link></li>
                 <li><a href="mailto:support@task-money.net" className="text-[#b8bcc8] hover:text-white transition-colors break-all">support@task-money.net</a></li>
-                <li><a href="https://x.com/tasmoney_jp" target="_blank" rel="noopener noreferrer" className="text-[#b8bcc8] hover:text-white transition-colors">公式X</a></li>
+                <li><a href="https://x.com/TasMoney2026" target="_blank" rel="noopener noreferrer" className="text-[#b8bcc8] hover:text-white transition-colors">公式X</a></li>
               </ul>
             </div>
             <div>
