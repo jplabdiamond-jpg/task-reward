@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Coins, Gamepad2, ClipboardList, Video, Gift, Shield, TrendingUp, Users } from 'lucide-react'
+import { Coins, Gamepad2, ClipboardList, Video, Gift, Shield, TrendingUp, Users, Quote, ChevronRight, HelpCircle } from 'lucide-react'
 
 const STATS = [
   { label: '累計支払い', value: '$2.4M+' },
@@ -19,6 +19,44 @@ const FEATURES = [
   { icon: Shield, title: '業務委託契約', desc: 'ポイントではなく「報酬」として支払い。法律準拠の安全な仕組み。' },
   { icon: TrendingUp, title: '50%還元', desc: 'ASP成果報酬の50%以上をユーザーに還元。業界最高水準。' },
   { icon: Users, title: '2段階リファラル', desc: '友達紹介で10%、紹介の紹介で5%の永続報酬。' },
+]
+
+const VOICES = [
+  {
+    nickname: 'Y.K.さん（28歳・会社員）',
+    avatar: 'Y',
+    avatarBg: 'from-purple-500 to-blue-500',
+    body: 'スマホで動画を見るだけで本当に振り込まれた。最初は半信半疑だったけど、PayPayに即日反映されて感動。今は通勤中の習慣になってます。',
+    earned: '¥18,400 / 月',
+  },
+  {
+    nickname: 'M.S.さん（35歳・主婦）',
+    avatar: 'M',
+    avatarBg: 'from-pink-500 to-rose-500',
+    body: '子どもが寝た後にアンケートを回答するだけ。家事の合間で月¥10,000は超えてます。報酬の計算が透明で、ASP承認まで何日かかるか明示されているのが好印象。',
+    earned: '¥12,800 / 月',
+  },
+  {
+    nickname: 'T.H.さん（42歳・自営業）',
+    avatar: 'T',
+    avatarBg: 'from-emerald-500 to-teal-500',
+    body: 'クレカ案件で1件¥8,000の還元を受けた。広告主直案件と比べても還元率が高くて、副業として割が良いです。サポートのレスも早い。',
+    earned: '¥38,200 / 月',
+  },
+]
+
+const SAMPLE_OFFERS = [
+  { type: '仮想通貨取引所', title: 'Bybit 口座開設＋初回入金', reward: '¥12,000', lead: '即時〜3日', emoji: '₿' },
+  { type: 'クレジットカード', title: '楽天カード 新規発行', reward: '¥8,500', lead: '30〜60日', emoji: '💳' },
+  { type: 'アンケート', title: '5分アンケート（生活全般）', reward: '¥120', lead: '即時', emoji: '📋' },
+  { type: 'アプリ', title: 'メルカリ 新規登録＋出品', reward: '¥800', lead: '1〜7日', emoji: '📱' },
+]
+
+const FAQ_PREVIEW = [
+  { q: 'Tas Moneyは無料で利用できますか？', a: '完全無料です。登録費用・月額費用・出金手数料いずれも無料です。' },
+  { q: '報酬はいつ付与されますか？', a: '案件種別により即時〜90日。詳細は各案件詳細とabout-rewardsで明示しています。' },
+  { q: '最低出金額はいくら？', a: '¥1,000から。PayPay/銀行振込/Amazonギフト券を選択できます。' },
+  { q: '海外在住でも利用できますか？', a: '現在は日本国内在住の方のみ対象です。ASP案件の多くが日本国内対象のためです。' },
 ]
 
 export default function HomePage() {
@@ -124,6 +162,94 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Voices: 利用者の声 */}
+      <section className="max-w-7xl mx-auto px-4 py-12 md:py-20">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-3">利用者の声</h2>
+          <p className="text-[#b8bcc8]">実際にTas Moneyで稼いでいる方々のリアルな体験談</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {VOICES.map(v => (
+            <div key={v.nickname} className="card p-6">
+              <Quote className="text-green-400 mb-3" size={20} />
+              <p className="text-sm text-[#e5e7eb] leading-relaxed mb-5">{v.body}</p>
+              <div className="flex items-center gap-3 pt-4 border-t border-[rgba(255,255,255,0.06)]">
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${v.avatarBg} flex items-center justify-center font-black text-white text-lg`}>
+                  {v.avatar}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs font-bold truncate">{v.nickname}</div>
+                  <div className="text-xs text-green-400 font-bold mt-0.5">{v.earned}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-center text-xs text-[#6b7280] mt-6">
+          ※ 個人の体験談であり、すべての方が同じ収益を保証するものではありません
+        </p>
+      </section>
+
+      {/* Sample Offers: 案件サンプル */}
+      <section className="bg-[#171a21] py-16 md:py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-3">案件サンプル</h2>
+            <p className="text-[#b8bcc8]">高単価から手軽な案件まで、500件以上から選べる</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {SAMPLE_OFFERS.map(o => (
+              <div key={o.title} className="card card-hover p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-2xl">{o.emoji}</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-pill bg-[#0e1014] text-[#b8bcc8]">{o.type}</span>
+                </div>
+                <h3 className="font-bold text-sm mb-3 leading-tight">{o.title}</h3>
+                <div className="flex items-end justify-between">
+                  <div>
+                    <div className="text-[10px] text-[#6b7280]">獲得報酬</div>
+                    <div className="text-xl font-black text-green-400">{o.reward}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-[10px] text-[#6b7280]">承認まで</div>
+                    <div className="text-xs font-bold text-[#b8bcc8]">{o.lead}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/about-rewards" className="inline-flex items-center gap-1 text-sm font-semibold text-green-400 hover:underline">
+              還元率と承認リードタイムの詳細 <ChevronRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Preview */}
+      <section className="max-w-4xl mx-auto px-4 py-12 md:py-20">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-3">よくあるご質問</h2>
+          <p className="text-[#b8bcc8]">登録前に知っておきたい4つの質問</p>
+        </div>
+        <div className="space-y-3">
+          {FAQ_PREVIEW.map(f => (
+            <div key={f.q} className="card p-5">
+              <div className="flex items-start gap-3 mb-2">
+                <HelpCircle size={18} className="text-green-400 mt-0.5 shrink-0" />
+                <h3 className="font-bold text-sm">{f.q}</h3>
+              </div>
+              <p className="text-xs text-[#b8bcc8] leading-relaxed pl-7">{f.a}</p>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-8">
+          <Link href="/faq" className="inline-flex items-center gap-1 text-sm font-semibold text-green-400 hover:underline">
+            すべての質問を見る（24件以上） <ChevronRight size={16} />
+          </Link>
         </div>
       </section>
 

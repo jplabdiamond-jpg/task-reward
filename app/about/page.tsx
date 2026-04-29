@@ -40,8 +40,17 @@ const ROADMAP = [
 ]
 
 export default function AboutPage() {
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'トップ', item: 'https://task-money.net/' },
+      { '@type': 'ListItem', position: 2, name: '会社概要・運営方針', item: 'https://task-money.net/about' },
+    ],
+  }
   return (
     <div className="min-h-screen bg-[#0e1014]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div className="max-w-3xl mx-auto px-4 py-12">
         <Link href="/" className="flex items-center gap-1.5 text-[#b8bcc8] hover:text-green-400 text-sm mb-8 transition-colors">
           <ArrowLeft size={14} />トップへ戻る

@@ -84,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               alternateName: 'タスマネ',
               url: SITE_URL,
               logo: `${SITE_URL}/logo.png`,
-              sameAs: [],
+              sameAs: ['https://x.com/TasMoney2026'],
               contactPoint: {
                 '@type': 'ContactPoint',
                 email: 'support@task-money.net',

@@ -35,8 +35,28 @@ const REJECTION_REASONS = [
 ]
 
 export default function AboutRewardsPage() {
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'トップ', item: 'https://task-money.net/' },
+      { '@type': 'ListItem', position: 2, name: '報酬・還元率について', item: 'https://task-money.net/about-rewards' },
+    ],
+  }
+  const serviceJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Tas Money',
+    serviceType: 'タスク報酬型 業務委託プラットフォーム',
+    provider: { '@type': 'Organization', name: 'Tas Money', url: 'https://task-money.net' },
+    areaServed: 'JP',
+    description: 'ASP成果報酬の50%以上をユーザーへ還元。承認リードタイム・否認可能性も公開。',
+    offers: { '@type': 'Offer', priceCurrency: 'JPY', price: '0', description: '登録・利用無料' },
+  }
   return (
     <div className="min-h-screen bg-[#0e1014]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <div className="max-w-3xl mx-auto px-4 py-12">
         <Link href="/" className="flex items-center gap-1.5 text-[#b8bcc8] hover:text-green-400 text-sm mb-8 transition-colors">
           <ArrowLeft size={14} />トップへ戻る

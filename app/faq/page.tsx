@@ -49,8 +49,19 @@ export const FAQ_ITEMS: { category: string; q: string; a: string }[] = [
 ]
 
 export default function FaqPage() {
+  // FAQPage JSON-LD（GoogleのリッチリザルトでQ&Aが表示される）
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_ITEMS.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  }
   return (
     <div className="min-h-screen bg-[#0e1014]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="max-w-3xl mx-auto px-4 py-12">
         <Link href="/" className="flex items-center gap-1.5 text-[#b8bcc8] hover:text-green-400 text-sm mb-8 transition-colors">
           <ArrowLeft size={14} />トップへ戻る

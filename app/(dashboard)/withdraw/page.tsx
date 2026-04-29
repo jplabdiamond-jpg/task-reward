@@ -22,6 +22,8 @@ export default function WithdrawPage() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [userId, setUserId] = useState<string | null>(null)
+  const [totpCode, setTotpCode] = useState('')
+  const [requiresTotp, setRequiresTotp] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -50,15 +52,21 @@ export default function WithdrawPage() {
       const res = await fetch('/api/withdraw', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, amount: amt, method, accountInfo }),
+        body: JSON.stringify({ userId, amount: amt, method, accountInfo, totpCode }),
       })
+      const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error ?? '出金申請に失敗しました')
+        if (data?.requiresTotp) {
+          setRequiresTotp(true)
+          throw new Error(data.error ?? '2FAコードを入力してください')
+        }
+        throw new Error(data?.error ?? '出金申請に失敗しました')
       }
       setSuccess(true)
       setBalance(prev => prev - amt)
       setAmount('')
+      setTotpCode('')
+      setRequiresTotp(false)
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : '出金申請に失敗しました')
     } finally {
@@ -219,6 +227,25 @@ export default function WithdrawPage() {
               <label className="block text-sm font-medium mb-1">送付先メールアドレス</label>
               <input type="email" className="input" placeholder="you@example.com" required
                 onChange={e => setAccountInfo({ email: e.target.value })} />
+            </div>
+          )}
+
+          {/* 高額出金 2FA入力 */}
+          {(requiresTotp || (parseInt(amount) >= 30000)) && (
+            <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-3">
+              <div className="text-xs font-bold text-amber-400 mb-2">
+                高額出金のため2FAコードを入力（¥30,000以上）
+              </div>
+              <input
+                type="text" inputMode="numeric" maxLength={6}
+                value={totpCode}
+                onChange={e => setTotpCode(e.target.value.replace(/\D/g, ''))}
+                className="input w-full text-center text-xl font-mono tracking-[0.4em]"
+                placeholder="000000"
+              />
+              <p className="text-[10px] text-[#6b7280] mt-1">
+                Authenticatorアプリの6桁コード。<a className="text-green-400 hover:underline" href="/settings/2fa">2FA未設定の方はこちら</a>
+              </p>
             </div>
           )}
 
