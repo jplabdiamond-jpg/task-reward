@@ -43,9 +43,8 @@ export async function GET(request: Request) {
     authUrl.searchParams.set('state', state)
     authUrl.searchParams.set('scope', 'profile openid')
     authUrl.searchParams.set('nonce', nonce)
-    // モバイルでLINEアプリへ飛ぶ挙動を抑止（ブラウザ内認可優先）
-    authUrl.searchParams.set('disable_auto_login', 'true')
-    authUrl.searchParams.set('disable_ios_app_switch', 'true')
+    // モバイルでLINEアプリ自動ログインを許可（UX優先）
+    // HMAC署名state方式でcookieに依存しないため、アプリ介在しても問題なし
 
     return NextResponse.redirect(authUrl.toString())
   } catch (err) {

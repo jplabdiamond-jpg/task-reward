@@ -292,13 +292,16 @@ export async function GET(request: Request) {
     }
 
     const linkData = await linkRes.json() as {
-      properties?: { hashed_token?: string; email_otp?: string }
+      properties?: { hashed_token?: string; email_otp?: string; action_link?: string }
+      hashed_token?: string
+      email_otp?: string
       action_link?: string
     }
 
-    const hashedToken = linkData.properties?.hashed_token
+    // Supabase REST直叩きはトップレベル、SDK経由は properties 配下に hashed_token あり
+    const hashedToken = linkData.hashed_token ?? linkData.properties?.hashed_token
     if (!hashedToken) {
-      console.error('[line/callback] hashed_token missing')
+      console.error('[line/callback] hashed_token missing. linkData=', JSON.stringify(linkData))
       const url = new URL('/login', origin)
       url.searchParams.set('error', 'セッショントークン取得失敗')
       const res = NextResponse.redirect(url)
