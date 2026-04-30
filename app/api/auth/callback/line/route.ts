@@ -291,17 +291,27 @@ export async function GET(request: Request) {
       return res
     }
 
-    const linkData = await linkRes.json() as {
-      properties?: { hashed_token?: string; email_otp?: string; action_link?: string }
-      hashed_token?: string
-      email_otp?: string
-      action_link?: string
+    const linkData = await linkRes.json() as Record<string, unknown>
+    console.log('[line/callback] linkData keys:', Object.keys(linkData))
+
+    // Supabase generate_link は色々な構造で返す可能性があるため全パターン対応
+    const props = (linkData.properties as Record<string, unknown> | undefined) ?? {}
+    const hashedToken = (linkData.hashed_token ?? props.hashed_token) as string | undefined
+    const emailOtp = (linkData.email_otp ?? props.email_otp) as string | undefined
+    const actionLink = (linkData.action_link ?? props.action_link) as string | undefined
+
+    // action_link のクエリ ?token=xxx を抽出（フォールバック）
+    let tokenFromLink: string | undefined
+    if (actionLink) {
+      try {
+        const u = new URL(actionLink)
+        tokenFromLink = u.searchParams.get('token') ?? undefined
+      } catch {}
     }
 
-    // Supabase REST直叩きはトップレベル、SDK経由は properties 配下に hashed_token あり
-    const hashedToken = linkData.hashed_token ?? linkData.properties?.hashed_token
-    if (!hashedToken) {
-      console.error('[line/callback] hashed_token missing. linkData=', JSON.stringify(linkData))
+    const finalTokenHash = hashedToken ?? tokenFromLink
+    if (!finalTokenHash && !emailOtp) {
+      console.error('[line/callback] no usable token in linkData=', JSON.stringify(linkData))
       const url = new URL('/login', origin)
       url.searchParams.set('error', 'セッショントークン取得失敗')
       const res = NextResponse.redirect(url)
@@ -327,15 +337,32 @@ export async function GET(request: Request) {
       }
     )
 
-    const { error: verifyErr } = await supabase.auth.verifyOtp({
-      type: 'magiclink',
-      token_hash: hashedToken,
-    })
+    let verifyErr: { message: string } | null = null
+
+    if (finalTokenHash) {
+      // 優先: token_hash を使った magiclink 検証
+      const { error } = await supabase.auth.verifyOtp({
+        type: 'magiclink',
+        token_hash: finalTokenHash,
+      })
+      verifyErr = error
+    }
+
+    if (verifyErr && emailOtp && userEmailForSession) {
+      // フォールバック: email_otp を使った検証
+      console.warn('[line/callback] token_hash failed, trying email_otp')
+      const { error } = await supabase.auth.verifyOtp({
+        type: 'email',
+        email: userEmailForSession,
+        token: emailOtp,
+      })
+      verifyErr = error
+    }
 
     if (verifyErr) {
       console.error('[line/callback] verifyOtp failed:', verifyErr.message)
       const url = new URL('/login', origin)
-      url.searchParams.set('error', 'ログイン処理に失敗しました')
+      url.searchParams.set('error', `ログイン処理に失敗しました: ${verifyErr.message}`)
       const res = NextResponse.redirect(url)
       clearOauthCookies(res)
       return res
