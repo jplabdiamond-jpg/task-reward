@@ -33,9 +33,12 @@ export async function GET(request: Request) {
     authUrl.searchParams.set('client_id', channelId)
     authUrl.searchParams.set('redirect_uri', redirectUri)
     authUrl.searchParams.set('state', state)
-    authUrl.searchParams.set('scope', 'profile openid email')
+    // メール権限が未承認の場合はemailを除外（承認後に追加可）
+    authUrl.searchParams.set('scope', 'profile openid')
     authUrl.searchParams.set('nonce', nonce)
-    authUrl.searchParams.set('bot_prompt', 'normal')
+    // モバイルでLINEアプリへ飛ぶ挙動を抑止し、ブラウザ内で認可完結
+    authUrl.searchParams.set('disable_auto_login', 'true')
+    authUrl.searchParams.set('disable_ios_app_switch', 'true')
 
     const res = NextResponse.redirect(authUrl.toString())
 
