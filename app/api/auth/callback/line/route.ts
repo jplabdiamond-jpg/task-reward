@@ -203,43 +203,78 @@ export async function GET(request: Request) {
       }
     }
 
-    // ③-3: 新規ユーザー作成
+    // ③-3: auth.users を email で検索（tr_usersに無くても auth に既存の場合あり）
     if (!supabaseUserId) {
-      // メール未提供の場合はLINE UIDベースの内部メールで補完
       const effectiveEmail = lineEmail ?? `line_${lineUserId}@line.tas-money.local`
 
-      const createRes = await fetch(`${supabaseUrl}/auth/v1/admin/users`, {
-        method: 'POST',
-        headers: {
-          apikey: serviceKey,
-          Authorization: adminAuth,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: effectiveEmail,
-          email_confirm: true,
-          user_metadata: {
-            provider: 'line',
-            line_user_id: lineUserId,
-            nickname: lineName,
-            avatar_url: linePicture,
-          },
-        }),
-      })
-
-      if (!createRes.ok) {
-        const errBody = await createRes.text()
-        console.error('[line/callback] auth user creation failed:', createRes.status, errBody)
-        const url = new URL('/login', origin)
-        url.searchParams.set('error', 'ユーザー作成に失敗しました')
-        const res = NextResponse.redirect(url)
-        clearOauthCookies(res)
-        return res
+      // まず auth.users API で既存ユーザーをemailで検索
+      const findAuthRes = await fetch(
+        `${supabaseUrl}/auth/v1/admin/users?per_page=1000`,
+        { headers: { apikey: serviceKey, Authorization: adminAuth } }
+      )
+      if (findAuthRes.ok) {
+        const authList = await findAuthRes.json() as { users?: Array<{ id: string; email: string }> }
+        const found = authList.users?.find(u => u.email?.toLowerCase() === effectiveEmail.toLowerCase())
+        if (found) {
+          supabaseUserId = found.id
+          userEmailForSession = found.email
+          console.log('[line/callback] reused existing auth.users by email:', found.id)
+        }
       }
 
-      const createdUser = await createRes.json() as { id: string; email: string }
-      supabaseUserId = createdUser.id
-      userEmailForSession = createdUser.email
+      // それでも無ければ新規作成
+      if (!supabaseUserId) {
+        const createRes = await fetch(`${supabaseUrl}/auth/v1/admin/users`, {
+          method: 'POST',
+          headers: {
+            apikey: serviceKey,
+            Authorization: adminAuth,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: effectiveEmail,
+            email_confirm: true,
+            user_metadata: {
+              provider: 'line',
+              line_user_id: lineUserId,
+              nickname: lineName,
+              avatar_url: linePicture,
+            },
+          }),
+        })
+
+        if (!createRes.ok) {
+          const errBody = await createRes.text()
+          console.error('[line/callback] auth user creation failed:', createRes.status, errBody)
+          // 422/409なら重複の可能性 → 一度だけリトライ（list取得で確実に取る）
+          if (createRes.status === 422 || createRes.status === 409 || errBody.includes('already')) {
+            const retry = await fetch(
+              `${supabaseUrl}/auth/v1/admin/users?per_page=1000`,
+              { headers: { apikey: serviceKey, Authorization: adminAuth } }
+            )
+            if (retry.ok) {
+              const list = await retry.json() as { users?: Array<{ id: string; email: string }> }
+              const dup = list.users?.find(u => u.email?.toLowerCase() === effectiveEmail.toLowerCase())
+              if (dup) {
+                supabaseUserId = dup.id
+                userEmailForSession = dup.email
+                console.log('[line/callback] recovered duplicate user:', dup.id)
+              }
+            }
+          }
+          if (!supabaseUserId) {
+            const url = new URL('/login', origin)
+            url.searchParams.set('error', 'ユーザー作成に失敗しました')
+            const res = NextResponse.redirect(url)
+            clearOauthCookies(res)
+            return res
+          }
+        } else {
+          const createdUser = await createRes.json() as { id: string; email: string }
+          supabaseUserId = createdUser.id
+          userEmailForSession = createdUser.email
+        }
+      }
 
       // tr_users 側にも upsert（DBトリガーがあれば不要だが安全のため明示）
       // referral_code はランダム生成、必須項目を埋める
