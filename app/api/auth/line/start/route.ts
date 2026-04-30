@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { signState } from '@/lib/line-state'
 
 export const runtime = 'edge'
 
@@ -6,6 +7,9 @@ export const runtime = 'edge'
  * LINE Login v2.1 認可開始エンドポイント
  * GET /api/auth/line/start?next=/dashboard
  * → LINE 認可URLへリダイレクト
+ *
+ * state は HMAC署名付きで自己完結（cookie不依存）。
+ * モバイルLINEアプリ介在時の cookie 消失問題を回避。
  */
 export async function GET(request: Request) {
   try {
@@ -13,19 +17,23 @@ export async function GET(request: Request) {
     const next = searchParams.get('next') ?? '/dashboard'
 
     const channelId = process.env.LINE_CHANNEL_ID?.trim()
-    if (!channelId) {
-      console.error('[line/start] LINE_CHANNEL_ID not set')
+    const channelSecret = process.env.LINE_CHANNEL_SECRET?.trim()
+
+    if (!channelId || !channelSecret) {
+      console.error('[line/start] missing LINE_CHANNEL_ID or LINE_CHANNEL_SECRET')
       return NextResponse.redirect(new URL('/login?error=LINE設定が未完了です', origin))
     }
 
-    // CSRF防止のstate / nonce 生成（暗号論的乱数）
-    const state = crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '')
-    const nonce = crypto.randomUUID().replace(/-/g, '')
-
-    // safeNext（同一オリジン強制）
+    // 同一オリジン強制
     const safeNext = next.startsWith('/') ? next : '/dashboard'
 
-    // state にアプリ側情報を埋め込み（HMAC不要・cookieに正本保存）
+    // nonce / 期限 / 戻り先を state に署名付きで埋め込み
+    const nonce = crypto.randomUUID().replace(/-/g, '')
+    const state = await signState(
+      { nonce, next: safeNext, exp: Date.now() + 10 * 60 * 1000 },
+      channelSecret
+    )
+
     const redirectUri = `${origin}/api/auth/callback/line`
 
     const authUrl = new URL('https://access.line.me/oauth2/v2.1/authorize')
@@ -33,28 +41,13 @@ export async function GET(request: Request) {
     authUrl.searchParams.set('client_id', channelId)
     authUrl.searchParams.set('redirect_uri', redirectUri)
     authUrl.searchParams.set('state', state)
-    // メール権限が未承認の場合はemailを除外（承認後に追加可）
     authUrl.searchParams.set('scope', 'profile openid')
     authUrl.searchParams.set('nonce', nonce)
-    // モバイルでLINEアプリへ飛ぶ挙動を抑止し、ブラウザ内で認可完結
+    // モバイルでLINEアプリへ飛ぶ挙動を抑止（ブラウザ内認可優先）
     authUrl.searchParams.set('disable_auto_login', 'true')
     authUrl.searchParams.set('disable_ios_app_switch', 'true')
 
-    const res = NextResponse.redirect(authUrl.toString())
-
-    // state/nonce/next を HttpOnly Cookieに保存（10分有効）
-    const cookieOpts = {
-      httpOnly: true,
-      secure: origin.startsWith('https://'),
-      sameSite: 'lax' as const,
-      path: '/',
-      maxAge: 60 * 10,
-    }
-    res.cookies.set('line_oauth_state', state, cookieOpts)
-    res.cookies.set('line_oauth_nonce', nonce, cookieOpts)
-    res.cookies.set('line_oauth_next', safeNext, cookieOpts)
-
-    return res
+    return NextResponse.redirect(authUrl.toString())
   } catch (err) {
     console.error('[line/start] unexpected:', err)
     const origin = new URL(request.url).origin

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { verifyState } from '@/lib/line-state'
 
 export const runtime = 'edge'
 
@@ -19,11 +20,8 @@ export async function GET(request: Request) {
   const errorDesc = searchParams.get('error_description')
 
   const cookieStore = await cookies()
-  const cookieState = cookieStore.get('line_oauth_state')?.value
-  const cookieNonce = cookieStore.get('line_oauth_nonce')?.value
-  const next = cookieStore.get('line_oauth_next')?.value ?? '/dashboard'
 
-  // クリーンアップ用（成功・失敗問わず削除）
+  // 後方互換のno-op（旧cookieが残っていればクリア）
   const clearOauthCookies = (res: NextResponse) => {
     res.cookies.delete('line_oauth_state')
     res.cookies.delete('line_oauth_nonce')
@@ -49,16 +47,6 @@ export async function GET(request: Request) {
     return res
   }
 
-  // CSRF: state検証
-  if (!cookieState || cookieState !== state) {
-    console.error('[line/callback] state mismatch')
-    const url = new URL('/login', origin)
-    url.searchParams.set('error', 'セキュリティ検証に失敗しました（state不一致）')
-    const res = NextResponse.redirect(url)
-    clearOauthCookies(res)
-    return res
-  }
-
   const channelId = process.env.LINE_CHANNEL_ID?.trim()
   const channelSecret = process.env.LINE_CHANNEL_SECRET?.trim()
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
@@ -72,6 +60,19 @@ export async function GET(request: Request) {
     clearOauthCookies(res)
     return res
   }
+
+  // CSRF: state検証（HMAC署名で自己完結）
+  const statePayload = await verifyState(state, channelSecret)
+  if (!statePayload) {
+    console.error('[line/callback] state verification failed')
+    const url = new URL('/login', origin)
+    url.searchParams.set('error', 'セキュリティ検証に失敗しました（state不一致）')
+    const res = NextResponse.redirect(url)
+    clearOauthCookies(res)
+    return res
+  }
+  const cookieNonce = statePayload.nonce
+  const next = statePayload.next ?? '/dashboard'
 
   try {
     const redirectUri = `${origin}/api/auth/callback/line`
