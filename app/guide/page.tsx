@@ -38,7 +38,7 @@ const STEPS = [
     n: 4,
     icon: Wallet,
     title: '出金・換金',
-    desc: '500円から出金可能。PayPal / 銀行振込 / Amazonギフト券 / 暗号通貨を選択。',
+    desc: '5,000円から出金可能。PayPal / 銀行振込 / Amazonギフト券 / 暗号通貨を選択。',
     color: 'from-amber-500 to-yellow-500',
     detail: ['Rewards画面から出金方法を選択', '出金先口座を入力（初回のみ）', '1〜3営業日で支払処理完了'],
   },
@@ -106,7 +106,7 @@ export default function GuidePage() {
         {/* CTA */}
         <div className="card p-8 text-center bg-gradient-to-br from-green-500/10 to-amber-500/10 border-green-500/20">
           <h2 className="text-2xl font-black mb-3">準備はOK？</h2>
-          <p className="text-sm text-[#b8bcc8] mb-6">無料登録は1分で完了。最低出金500円から。</p>
+          <p className="text-sm text-[#b8bcc8] mb-6">無料登録は1分で完了。最低出金5,000円から。</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/signup" className="btn-primary px-8 py-3 inline-block">
               無料で登録する →

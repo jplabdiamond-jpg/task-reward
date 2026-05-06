@@ -191,7 +191,7 @@ export default function AboutRewardsPage() {
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="bg-[#0e1014] rounded-xl p-4">
               <div className="text-xs text-[#6b7280] mb-1">最低出金額</div>
-              <div className="text-xl font-bold text-green-400">¥1,000</div>
+              <div className="text-xl font-bold text-green-400">¥5,000</div>
             </div>
             <div className="bg-[#0e1014] rounded-xl p-4">
               <div className="text-xs text-[#6b7280] mb-1">処理時間</div>

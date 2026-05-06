@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Coins, Gamepad2, ClipboardList, Video, Gift, Shield, TrendingUp, Users, Quote, ChevronRight, HelpCircle } from 'lucide-react' // Quote残置: ローンチ前バナーで使用
 
 const FEATURE_HIGHLIGHTS = [
-  { label: '最低出金', value: '¥500〜' },
+  { label: '最低出金', value: '¥5,000〜' },
   { label: 'ユーザー還元率', value: '50%以上' },
   { label: '出金手段', value: 'PayPal/銀行/ギフト券' },
   { label: 'ローンチ', value: '2026年予定' },
@@ -33,7 +33,7 @@ const SAMPLE_OFFERS = [
 const FAQ_PREVIEW = [
   { q: 'Tas Moneyは無料で利用できますか？', a: '完全無料です。登録費用・月額費用・出金手数料いずれも無料です。' },
   { q: '報酬はいつ付与されますか？', a: '案件種別により即時〜90日。詳細は各案件詳細とabout-rewardsで明示しています。' },
-  { q: '最低出金額はいくら？', a: '¥500から。PayPal・銀行振込・Amazonギフト券などを選択できます。具体的な対応手段はローンチ時に確定し、Aboutおよびabout-rewardsページにて明示します。' },
+  { q: '最低出金額はいくら？', a: '¥5,000から。PayPal・銀行振込・Amazonギフト券などを選択できます。具体的な対応手段はローンチ時に確定し、Aboutおよびabout-rewardsページにて明示します。' },
   { q: '海外在住でも利用できますか？', a: '現在は日本国内在住の方のみ対象です。ASP案件の多くが日本国内対象のためです。' },
 ]
 
@@ -68,7 +68,7 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 pt-16 pb-12 md:pt-24 md:pb-20">
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full text-green-400 text-sm font-bold mb-6">
-            <Coins size={14} /> 報酬即時付与・最低出金 ¥500
+            <Coins size={14} /> 報酬即時付与・最低出金 ¥5,000
           </div>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-6">
             タスクで稼ぐ。

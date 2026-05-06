@@ -7,9 +7,9 @@ import { formatCurrency } from '@/lib/utils'
 type Method = 'bank' | 'paypay' | 'amazon_gift'
 
 const METHODS: { value: Method; label: string; icon: string; minAmount: number }[] = [
-  { value: 'paypay', label: 'PayPay', icon: '🔵', minAmount: 1000 },
-  { value: 'bank', label: '銀行振込', icon: '🏦', minAmount: 1000 },
-  { value: 'amazon_gift', label: 'Amazonギフト券', icon: '📦', minAmount: 1000 },
+  { value: 'paypay', label: 'PayPay', icon: '🔵', minAmount: 5000 },
+  { value: 'bank', label: '銀行振込', icon: '🏦', minAmount: 5000 },
+  { value: 'amazon_gift', label: 'Amazonギフト券', icon: '📦', minAmount: 5000 },
 ]
 
 export default function WithdrawPage() {
@@ -43,7 +43,7 @@ export default function WithdrawPage() {
   const handleWithdraw = async (e: React.FormEvent) => {
     e.preventDefault()
     const amt = parseInt(amount)
-    if (!amt || amt < 1000) { setError('最低出金額は¥1,000です'); return }
+    if (!amt || amt < 5000) { setError('最低出金額は¥5,000です'); return }
     if (amt > balance) { setError('残高が不足しています'); return }
     if (!userId) return
 
@@ -93,7 +93,7 @@ export default function WithdrawPage() {
       <div className="card p-5 text-center">
         <div className="text-xs text-[#b8bcc8] mb-1">利用可能残高</div>
         <div className="text-4xl font-bold text-green-400">{formatCurrency(balance)}</div>
-        <div className="text-xs text-[#6b7280] mt-1">最低出金額: ¥1,000</div>
+        <div className="text-xs text-[#6b7280] mt-1">最低出金額: ¥5,000</div>
       </div>
 
       {/* 出金手段別 比較表（ASP審査要件: 振込手段の明確化） */}
@@ -111,9 +111,9 @@ export default function WithdrawPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[rgba(255,255,255,0.04)]">
-              <tr><td className="py-2 pr-2">🔵 PayPay</td><td className="py-2 pr-2 text-right">¥1,000</td><td className="py-2 pr-2 text-right text-green-400">無料</td><td className="py-2 pr-2">1〜3営業日</td><td className="py-2 text-[#6b7280]">¥30,000超で必要</td></tr>
-              <tr><td className="py-2 pr-2">🏦 銀行振込</td><td className="py-2 pr-2 text-right">¥1,000</td><td className="py-2 pr-2 text-right text-green-400">無料</td><td className="py-2 pr-2">1〜3営業日</td><td className="py-2 text-[#6b7280]">¥30,000超で必要</td></tr>
-              <tr><td className="py-2 pr-2">📦 Amazonギフト</td><td className="py-2 pr-2 text-right">¥1,000</td><td className="py-2 pr-2 text-right text-green-400">無料</td><td className="py-2 pr-2">即日〜翌営業日</td><td className="py-2 text-[#6b7280]">不要</td></tr>
+              <tr><td className="py-2 pr-2">🔵 PayPay</td><td className="py-2 pr-2 text-right">¥5,000</td><td className="py-2 pr-2 text-right text-green-400">無料</td><td className="py-2 pr-2">1〜3営業日</td><td className="py-2 text-[#6b7280]">¥30,000超で必要</td></tr>
+              <tr><td className="py-2 pr-2">🏦 銀行振込</td><td className="py-2 pr-2 text-right">¥5,000</td><td className="py-2 pr-2 text-right text-green-400">無料</td><td className="py-2 pr-2">1〜3営業日</td><td className="py-2 text-[#6b7280]">¥30,000超で必要</td></tr>
+              <tr><td className="py-2 pr-2">📦 Amazonギフト</td><td className="py-2 pr-2 text-right">¥5,000</td><td className="py-2 pr-2 text-right text-green-400">無料</td><td className="py-2 pr-2">即日〜翌営業日</td><td className="py-2 text-[#6b7280]">不要</td></tr>
             </tbody>
           </table>
         </div>
@@ -128,7 +128,7 @@ export default function WithdrawPage() {
         <ul className="space-y-1.5 text-xs text-[#b8bcc8]">
           <li className="flex gap-2">
             <span className="text-green-400 shrink-0">•</span>
-            <span><strong className="text-white">最低出金額:</strong> ¥1,000（未満は次回繰越）</span>
+            <span><strong className="text-white">最低出金額:</strong> ¥5,000（未満は次回繰越）</span>
           </li>
           <li className="flex gap-2">
             <span className="text-green-400 shrink-0">•</span>
@@ -190,10 +190,10 @@ export default function WithdrawPage() {
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#b8bcc8] font-medium">¥</span>
               <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
-                className="input pl-7" placeholder="1000" min="1000" max={balance} required />
+                className="input pl-7" placeholder="5000" min="5000" max={balance} required />
             </div>
             <div className="flex gap-2 mt-1.5">
-              {[1000, 3000, 5000, balance].map(v => (
+              {[5000, 10000, 30000, balance].map(v => (
                 <button key={v} type="button" onClick={() => setAmount(String(v))}
                   className="text-xs px-2 py-1 bg-[#0e1014] rounded-lg text-[#b8bcc8] hover:text-green-400 transition-colors">
                   {v === balance ? '全額' : formatCurrency(v)}
@@ -268,11 +268,11 @@ export default function WithdrawPage() {
         </form>
       )}
 
-      {balance < 1000 && (
+      {balance < 5000 && (
         <div className="card p-6 text-center">
           <AlertCircle size={32} className="mx-auto text-[#6b7280] mb-2" />
           <p className="font-semibold text-sm">残高が不足しています</p>
-          <p className="text-xs text-[#b8bcc8] mt-1">最低出金額¥1,000以上になると出金できます</p>
+          <p className="text-xs text-[#b8bcc8] mt-1">最低出金額¥5,000以上になると出金できます</p>
           <a href="/earn" className="btn-primary inline-block mt-4 px-6">案件を探す →</a>
         </div>
       )}

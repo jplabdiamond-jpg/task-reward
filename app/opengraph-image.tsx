@@ -46,7 +46,7 @@ export default async function OgImage() {
           タスクで稼ぐ。リアルマネー。
         </div>
         <div style={{ fontSize: 26, color: '#b8bcc8' }}>
-          最低出金 ¥500・即時付与・業界最高還元率
+          最低出金 ¥5,000・即時付与・業界最高還元率
         </div>
       </div>
     ),

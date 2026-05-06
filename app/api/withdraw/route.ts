@@ -24,8 +24,8 @@ export async function POST(req: NextRequest) {
     if (!userId || !amount || !method) {
       return NextResponse.json({ error: '必須パラメータ不足' }, { status: 400 })
     }
-    if (amount < 1000) {
-      return NextResponse.json({ error: '最低出金額は¥1,000です' }, { status: 400 })
+    if (amount < 5000) {
+      return NextResponse.json({ error: '最低出金額は¥5,000です' }, { status: 400 })
     }
 
     const supabase = await createClient()
