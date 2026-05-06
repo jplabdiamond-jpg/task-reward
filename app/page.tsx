@@ -1,11 +1,11 @@
 import Link from 'next/link'
-import { Coins, Gamepad2, ClipboardList, Video, Gift, Shield, TrendingUp, Users, Quote, ChevronRight, HelpCircle } from 'lucide-react'
+import { Coins, Gamepad2, ClipboardList, Video, Gift, Shield, TrendingUp, Users, Quote, ChevronRight, HelpCircle } from 'lucide-react' // Quote残置: ローンチ前バナーで使用
 
-const STATS = [
-  { label: '累計支払い', value: '$2.4M+' },
-  { label: 'アクティブユーザー', value: '85,000+' },
-  { label: '案件数', value: '500+' },
-  { label: '平均報酬/日', value: '$3.20' },
+const FEATURE_HIGHLIGHTS = [
+  { label: '最低出金', value: '¥500〜' },
+  { label: 'ユーザー還元率', value: '50%以上' },
+  { label: '出金手段', value: 'PayPal/銀行/ギフト券' },
+  { label: 'ローンチ', value: '2026年予定' },
 ]
 
 const EARN_TILES = [
@@ -21,29 +21,7 @@ const FEATURES = [
   { icon: Users, title: '2段階リファラル', desc: '友達紹介で10%、紹介の紹介で5%の永続報酬。' },
 ]
 
-const VOICES = [
-  {
-    nickname: 'Y.K.さん（28歳・会社員）',
-    avatar: 'Y',
-    avatarBg: 'from-purple-500 to-blue-500',
-    body: 'スマホで動画を見るだけで本当に振り込まれた。最初は半信半疑だったけど、PayPayに即日反映されて感動。今は通勤中の習慣になってます。',
-    earned: '¥18,400 / 月',
-  },
-  {
-    nickname: 'M.S.さん（35歳・主婦）',
-    avatar: 'M',
-    avatarBg: 'from-pink-500 to-rose-500',
-    body: '子どもが寝た後にアンケートを回答するだけ。家事の合間で月¥10,000は超えてます。報酬の計算が透明で、ASP承認まで何日かかるか明示されているのが好印象。',
-    earned: '¥12,800 / 月',
-  },
-  {
-    nickname: 'T.H.さん（42歳・自営業）',
-    avatar: 'T',
-    avatarBg: 'from-emerald-500 to-teal-500',
-    body: 'クレカ案件で1件¥8,000の還元を受けた。広告主直案件と比べても還元率が高くて、副業として割が良いです。サポートのレスも早い。',
-    earned: '¥38,200 / 月',
-  },
-]
+// 体験談は2026年ローンチ後、実ユーザーの了承を得てから掲載予定。
 
 const SAMPLE_OFFERS = [
   { type: '仮想通貨取引所', title: 'Bybit 口座開設＋初回入金', reward: '¥12,000', lead: '即時〜3日', emoji: '₿' },
@@ -55,7 +33,7 @@ const SAMPLE_OFFERS = [
 const FAQ_PREVIEW = [
   { q: 'Tas Moneyは無料で利用できますか？', a: '完全無料です。登録費用・月額費用・出金手数料いずれも無料です。' },
   { q: '報酬はいつ付与されますか？', a: '案件種別により即時〜90日。詳細は各案件詳細とabout-rewardsで明示しています。' },
-  { q: '最低出金額はいくら？', a: '¥1,000から。PayPay/銀行振込/Amazonギフト券を選択できます。' },
+  { q: '最低出金額はいくら？', a: '¥500から。PayPal・銀行振込・Amazonギフト券などを選択できます。具体的な対応手段はローンチ時に確定し、Aboutおよびabout-rewardsページにて明示します。' },
   { q: '海外在住でも利用できますか？', a: '現在は日本国内在住の方のみ対象です。ASP案件の多くが日本国内対象のためです。' },
 ]
 
@@ -113,11 +91,11 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Stats */}
+          {/* Feature Highlights（ローンチ前のため利用統計は非掲載） */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-14">
-            {STATS.map(s => (
+            {FEATURE_HIGHLIGHTS.map(s => (
               <div key={s.label} className="stat-tile text-center">
-                <div className="text-xl md:text-2xl font-black text-green-400 mb-0.5">{s.value}</div>
+                <div className="text-base md:text-lg font-black text-green-400 mb-0.5">{s.value}</div>
                 <div className="text-xs text-[#6b7280]">{s.label}</div>
               </div>
             ))}
@@ -165,32 +143,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Voices: 利用者の声 */}
+      {/* 利用者の声（2026年ローンチ後に実ユーザーの了承を得たうえで掲載予定） */}
       <section className="max-w-7xl mx-auto px-4 py-12 md:py-20">
-        <div className="text-center mb-10">
+        <div className="text-center max-w-2xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-3">利用者の声</h2>
-          <p className="text-[#b8bcc8]">実際にTas Moneyで稼いでいる方々のリアルな体験談</p>
+          <p className="text-[#b8bcc8] mb-6">
+            Tas Moneyは現在ローンチ準備中です。
+            <br className="hidden sm:block" />
+            実際にご利用いただいた方の体験談は、サービス開始後に
+            ご本人の同意を得たうえで掲載いたします。
+          </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-sm font-bold">
+            <Quote size={14} /> 2026年ローンチ予定
+          </div>
         </div>
-        <div className="grid md:grid-cols-3 gap-4">
-          {VOICES.map(v => (
-            <div key={v.nickname} className="card p-6">
-              <Quote className="text-green-400 mb-3" size={20} />
-              <p className="text-sm text-[#e5e7eb] leading-relaxed mb-5">{v.body}</p>
-              <div className="flex items-center gap-3 pt-4 border-t border-[rgba(255,255,255,0.06)]">
-                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${v.avatarBg} flex items-center justify-center font-black text-white text-lg`}>
-                  {v.avatar}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="text-xs font-bold truncate">{v.nickname}</div>
-                  <div className="text-xs text-green-400 font-bold mt-0.5">{v.earned}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <p className="text-center text-xs text-[#6b7280] mt-6">
-          ※ 個人の体験談であり、すべての方が同じ収益を保証するものではありません
-        </p>
       </section>
 
       {/* Sample Offers: 案件サンプル */}
