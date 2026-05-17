@@ -2,3 +2,6 @@ name = "tas-money"
 compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
+
+[vars]
+NEXT_PUBLIC_CPX_APP_ID = "33111"
